@@ -2,6 +2,7 @@
 #define MOVIMENTACAO_HPP
 
 #include "Date.h"
+#include "TipoMov.hpp"
 
 class Movimentacao{
 protected:
@@ -9,9 +10,9 @@ protected:
 	int carteiraID;
 	Date data;
 	double quantMov;
-	char tipoMov;
+	TipoMov tipoMov; //será que ele quer um enum aqui?
 public:
-	Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, char tipoMov, double quantMov);
+	Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, TipoMov tipoMov, double quantMov);
 	virtual ~Movimentacao();
 
 	int getCarteiraId() const;
@@ -20,8 +21,8 @@ public:
 	void setData(Date data);
 	int getMovimentacaoId() const;
 	void setMovimentacaoId(int movimentacaoId);
-	char getTipoMov() const;
-	void setTipoMov(char tipoMov);
+	TipoMov getTipoMov() const;
+	void setTipoMov(TipoMov tipoMov);
 
 	void setQuantMov(double quantMov);
 	virtual double getQuantMov() const;

@@ -1,13 +1,14 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-#include "Menu.hpp"
+#include "Movimentacao.hpp"
+#include "Venda.hpp"
+#include "Date.h"
 
 
 int main(){
-	vector<string> itens {"a", "b", "c", "d"};
-	Menu* menu = new Menu(itens, "MENU", "Escolha uma opcao: ");
-	menu->getChoice();
-	delete(menu);
+	Date* data = new Date(4,5,2025);
+	Movimentacao* mov = new Venda(1, 1, *data, 10);
+	cout << mov->getQuantMov();
 	return 0;
 }
