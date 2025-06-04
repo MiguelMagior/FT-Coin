@@ -4,12 +4,12 @@
 #include "Date.h"
 
 class Movimentacao{
-private:
+protected:
 	int movimentacaoID;
 	int carteiraID;
 	Date data;
-	char tipoOp;
 	double quantMov;
+	char tipoOp;
 public:
 	Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, char tipoOp, double quantMov);
 	virtual ~Movimentacao();

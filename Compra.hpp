@@ -2,7 +2,7 @@
 #define COMPRA_HPP
 
 #include "Movimentacao.hpp"
-#include "Date.hpp"
+#include "Date.h"
 
 class Compra : public Movimentacao{
 public:

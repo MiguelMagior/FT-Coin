@@ -1,11 +1,11 @@
 #include "Venda.hpp"
 
 Venda::Venda(const int movimentacaoID, const int carteiraID, const Date &data, double quantMov)
-	: movimentacaoID(movimentacaoID), carteiraID(carteiraID), data(data), quantMov(quantMov){
-	Venda::tipoOp = 'V';
+	: Movimentacao(movimentacaoID, carteiraID, data, 'V', quantMov ){
 }
-virtual Venda::~Venda(){
+Venda::~Venda(){
 }
-double Venda::getQuantMov(){
-	return Venda::quantMov * (-1);
+
+double Venda::getQuantMov() const{
+	return (-1) * Venda::quantMov;
 }

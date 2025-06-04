@@ -1,11 +1,12 @@
 #include "Compra.hpp"
 
 Compra::Compra(const int movimentacaoID, const int carteiraID, const Date &data, double quantMov)
-	: movimentacaoID(movimentacaoID), carteiraID(carteiraID), data(data), quantMov(quantMov){
-	Compra::tipoOp = 'C';
+	: Movimentacao(movimentacaoID, carteiraID, data, 'C', quantMov ){
 }
-virtual Compra::~Compra(){
+
+Compra::~Compra(){
 }
-double Compra::getQuantMov(){
+
+double Compra::getQuantMov() const{
 	return Compra::quantMov;
 }
