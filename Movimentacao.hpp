@@ -9,9 +9,9 @@ protected:
 	int carteiraID;
 	Date data;
 	double quantMov;
-	char tipoOp;
+	char tipoMov;
 public:
-	Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, char tipoOp, double quantMov);
+	Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, char tipoMov, double quantMov);
 	virtual ~Movimentacao();
 
 	int getCarteiraId() const;
@@ -20,8 +20,8 @@ public:
 	void setData(Date data);
 	int getMovimentacaoId() const;
 	void setMovimentacaoId(int movimentacaoId);
-	char getTipoOp() const;
-	void setTipoOp(char tipoOp);
+	char getTipoMov() const;
+	void setTipoMov(char tipoMov);
 
 	void setQuantMov(double quantMov);
 	virtual double getQuantMov() const;

@@ -1,8 +1,8 @@
 #include "Movimentacao.hpp"
 #include "Date.h"
 
-Movimentacao::Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, char tipoOp, double quantMov)
-	: movimentacaoID(movimentacaoID), carteiraID(carteiraID), data(data), tipoOp(tipoOp), quantMov(quantMov){
+Movimentacao::Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, char tipoMov, double quantMov)
+	: movimentacaoID(movimentacaoID), carteiraID(carteiraID), data(data), tipoMov(tipoMov), quantMov(quantMov){
 }
 Movimentacao::~Movimentacao(){
 }
@@ -39,10 +39,10 @@ void Movimentacao::setQuantMov(double quantMov) {
 	this->quantMov = quantMov;
 }
 
-char Movimentacao::getTipoOp() const {
-	return tipoOp;
+char Movimentacao::getTipoMov() const {
+	return tipoMov;
 }
 
-void Movimentacao::setTipoOp(char tipoOp) {
-	this->tipoOp = tipoOp;
+void Movimentacao::setTipoMov(char tipoMov) {
+	this->tipoMov = tipoMov;
 }
