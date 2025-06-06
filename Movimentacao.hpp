@@ -10,7 +10,7 @@ protected:
 	int carteiraID;
 	Date data;
 	double quantMov;
-	TipoMov tipoMov; //será que ele quer um enum aqui?
+	TipoMov tipoMov;
 public:
 	Movimentacao(const int movimentacaoID, const int carteiraID, const Date &data, TipoMov tipoMov, double quantMov);
 	virtual ~Movimentacao();

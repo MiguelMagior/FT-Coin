@@ -9,6 +9,6 @@ using namespace std;
 int main(){
 	Date* data = new Date(4,5,2025);
 	Movimentacao* mov = new Venda(1, 1, *data, 10);
-	cout << mov->getQuantMov();
+	cout << static_cast<char>(mov->getTipoMov()) << endl;
 	return 0;
 }
