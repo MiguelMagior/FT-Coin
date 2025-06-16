@@ -1,1 +1,1 @@
- g++ Controller.cpp Menu.cpp WalletDAO.cpp TransactionDAO.cpp Oracle.cpp WalletMemoryDAO.cpp TransactionMemoryDAO.cpp OracleMemoryDAO.cpp main.cpp -o main
+ g++ Controller.cpp Menu.cpp Wallet.cpp Transaction.cpp Oracle.cpp WalletDAO.cpp TransactionDAO.cpp OracleDAO.cpp WalletMemoryDAO.cpp TransactionMemoryDAO.cpp OracleMemoryDAO.cpp main.cpp -o main
