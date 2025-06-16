@@ -8,7 +8,7 @@
 #include <mariadb/conncpp.hpp>
 #include "Wallet.hpp"
 
-class WalletDBDAO {
+class WalletDBDAO{
 private:
     std::unique_ptr<sql::Connection> conn;
 

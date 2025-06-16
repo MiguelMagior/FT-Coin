@@ -3,8 +3,9 @@
 #include <vector>
 using namespace std;
 
-Menu::Menu(vector<string> &itens, string title, string message) : title(title), itens(itens), message(message){
+Menu::Menu(vector<string> &itens, string title) : title(title), itens(itens){
 	this->decorator = '-';
+	this->message = "Choose a option: ";
 }
 
 void Menu::decorate(){
@@ -22,7 +23,7 @@ void Menu::printMenu(){
 }
 
 bool Menu::isValidChoice(int choice){
-	if((choice >= 0) && (choice <= itens.size())){
+	if((choice > 0) && (choice <= itens.size())){
 		return true;
 	}
 	else{
@@ -38,6 +39,8 @@ int Menu::getChoice(){
 		cout << " " << message;
 		cin >> choice;
 		} while(!isValidChoice(choice));
+	if(choice == itens.size()+1)
+		return -1;
 	return choice;
 }
 

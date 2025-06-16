@@ -4,10 +4,11 @@
 #include <vector>
 #include <optional>
 #include "Transaction.hpp"
+#include "TransactionDAO.hpp"
 
 using namespace std;
 
-class TransactionMemoryDAO {
+class TransactionMemoryDAO : public TransactionDAO {
 private:
     vector<Transaction> transactions;
 

@@ -4,8 +4,9 @@
 #include <vector>
 #include <optional>
 #include "Wallet.hpp"
+#include "WalletDAO.hpp"
 
-class WalletMemoryDAO {
+class WalletMemoryDAO : public WalletDAO {
 private:
     std::vector<Wallet> wallets;
 

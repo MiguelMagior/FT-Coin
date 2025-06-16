@@ -5,8 +5,9 @@
 #include <optional>
 #include <string>
 #include "Oracle.hpp"
-
-class OracleMemoryDAO {
+#include "OracleMemoryDAO.hpp"
+#include "OracleDAO.hpp"
+class OracleMemoryDAO : public OracleDAO{
 private:
     std::vector<Oracle> oracles;
 

@@ -13,7 +13,7 @@ private:
 	char decorator;
 
 public:
-	Menu(vector<string> &itens, string title = "Menu", string message = "Escolha uma opcao: ");
+	Menu(vector<string> &itens, string title = "Menu");
 	void decorate();
 	void printMenu();
 	bool isValidChoice(int choice);
