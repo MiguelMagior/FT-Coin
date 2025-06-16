@@ -24,7 +24,7 @@ void Controller::start(){
 		"Wallet", "Transaction", "Report", "Help", "Close"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::walletMenu, &Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste
+		&Controller::walletMenu, &Controller::transactionMenu, &Controller::reportMenu, &Controller::menuHelp
 	};
 	launchMenu(menuItens, "FT-COIN", functions);
 }
@@ -34,10 +34,10 @@ void Controller::launchMenu(vector<string> menuItens, string title, vector<void 
 	int choice;
 
 	while(choice = menu.getChoice()){
-		(this->*functions.at(choice-1))();
 		if(choice == menuItens.size()){
 			break;
 		}
+		(this->*functions.at(choice-1))();
 	}
 }
 
@@ -51,3 +51,25 @@ void Controller::walletMenu(){
 	launchMenu(menuItens, "Wallet", functions);
 }
 
+void Controller::transactionMenu(){
+	vector<string> menuItens{
+		"Register Purchase", "Register Sale", "Return"
+	};
+	vector<void (Controller::*)()> functions{
+		&Controller::teste, &Controller::teste
+	};
+	launchMenu(menuItens, "Transaction", functions);
+}
+
+void Controller::reportMenu(){
+	vector<string> menuItens{
+		"Wallets by ID", "Wallets by Name", "Wallet Balance", "Transaction History", "Wallet Balance","Return"
+	};
+	vector<void (Controller::*)()> functions{
+		&Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste
+	};
+	launchMenu(menuItens, "Transaction", functions);
+}
+void Controller::menuHelp(){
+	teste();
+}

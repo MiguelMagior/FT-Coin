@@ -20,6 +20,9 @@ private:
 
 	//menu
 	void walletMenu();
+	void transactionMenu();
+	void reportMenu();
+	void menuHelp();
 
 	//wallet
 	//void newWallet();
