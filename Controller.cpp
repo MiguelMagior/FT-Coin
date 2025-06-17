@@ -4,6 +4,7 @@
 #include "WalletMemoryDAO.hpp"
 #include "TransactionMemoryDAO.hpp"
 #include "OracleMemoryDAO.hpp"
+#include "Wallet.hpp"
 
 #include <string>
 #include <iostream>
@@ -46,7 +47,7 @@ void Controller::walletMenu(){
 		"New Wallet", "See Wallet", "Edit Wallet", "Delete Wallet", "Return"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste
+		&Controller::newWallet, &Controller::seeWallet, &Controller::editWallet, &Controller::deleteWallet
 	};
 	launchMenu(menuItens, "Wallet", functions);
 }
@@ -72,4 +73,85 @@ void Controller::reportMenu(){
 }
 void Controller::menuHelp(){
 	teste();
+}
+
+void Controller::newWallet(){
+	string holderName, broker;
+	Wallet newWallet;
+
+	cin.ignore();
+	cout << " *** NEW WALLET ***" << endl;
+	cout << " Holder Name: ";
+	getline(cin, holderName);
+	cout << " Broker: ";
+	getline(cin, broker);
+
+	newWallet.setId(newWallet.getId());
+	newWallet.setHolderName(holderName);
+	newWallet.setBroker(broker);
+
+	switch(wallets->addWallet(newWallet)){
+	case true:
+		cout << " Wallet added successfully" << endl;
+		break;
+	default:
+		cout << " Error adding Wallet" << endl;
+	}
+}
+
+void Controller::getWalletById(){
+	int id;
+	cin.ignore();
+	cout << " ID: ";
+	cin >> id;
+
+	const Wallet* wallet = wallets->getWalletById(id);
+
+
+	if (wallet != nullptr) {
+        cout << *wallet << endl;
+	}
+	else {
+		cout << "Wallet with ID " << id << " not found!" << endl;
+	 }
+}
+void Controller::seeWallet(){
+	cout << endl << " *** SEE WALLET ***" << endl;
+	getWalletById();
+}
+
+void Controller::editWallet(){
+	string holderName, broker;
+	int id;
+
+	cout << " *** EDIT WALLET ***" << endl;
+	cout << " ID: ";
+	cin >> id;
+
+	Wallet* wallet = wallets->getWalletById(id);
+
+	cin.ignore();
+	cout << " Holder Name: ";
+	getline(cin, holderName);
+	cout << " Broker: ";
+	getline(cin, broker);
+
+	wallet->setHolderName(holderName);
+	wallet->setBroker(broker);
+}
+
+void Controller::deleteWallet(){
+	int id;
+
+	cout << " *** DELETE WALLET ***" << endl;
+	cout << " ID: ";
+	cin >> id;
+
+	switch(wallets->deleteWallet(id)){
+	case true:
+		cout << " Wallet deleted successfully" << endl;
+		break;
+	default:
+		cout << " Error deleting wallet" << endl;
+	}
 }

@@ -1,14 +1,19 @@
 #include "Wallet.hpp"
 #include <string>
+#include <iostream>
 
 using namespace std;
 
+int Wallet::lastWalletId = 0;
+
 // Default constructor
-Wallet::Wallet() : id(0), holderName(""), broker("") {}
+Wallet::Wallet() : id(++lastWalletId), holderName(""), broker("") {
+}
 
 // Parameterized constructor
 Wallet::Wallet(int id, const string& holderName, const string& broker)
-    : id(id), holderName(holderName), broker(broker) {}
+    : id(id), holderName(holderName), broker(broker) {
+}
 
 // Getters
 int Wallet::getId() const {
@@ -34,4 +39,11 @@ void Wallet::setHolderName(const string& name) {
 
 void Wallet::setBroker(const string& broker) {
     this->broker = broker;
+}
+
+ostream& operator<<(ostream& os, const Wallet& wallet){
+	os << " Wallet " << wallet.id
+	<< " | Holder: " << wallet.holderName
+	<< " | Broker: " << wallet.broker;
+	return os;
 }

@@ -15,14 +15,13 @@ bool WalletMemoryDAO::addWallet(const Wallet& wallet) {
     return true;
 }
 
-std::optional<Wallet> WalletMemoryDAO::getWalletById(int id) const {
-    auto it = std::find_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
-        return w.getId() == id;
-    });
-    if (it != wallets.end()) {
-        return *it;
-    }
-    return std::nullopt;
+Wallet* WalletMemoryDAO::getWalletById(int id){
+	auto it = std::find_if(wallets.begin(), wallets.end(),[id](const Wallet& w) { return w.getId() == id; });
+
+	if (it != wallets.end()) {
+		return &(*it);
+	}
+	return nullptr;
 }
 
 bool WalletMemoryDAO::updateWallet(const Wallet& wallet) {

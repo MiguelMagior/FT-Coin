@@ -14,6 +14,7 @@ void Menu::decorate(){
 }
 
 void Menu::printMenu(){
+	decorate();
 	cout << " " << title << endl;
 	decorate();
 	for(int index = 0; index < itens.size(); index++){

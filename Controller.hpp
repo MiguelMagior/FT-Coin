@@ -25,7 +25,11 @@ private:
 	void menuHelp();
 
 	//wallet
-	//void newWallet();
+	void newWallet();
+	void getWalletById();
+	void seeWallet();
+	void editWallet();
+	void deleteWallet();
 public:
 	Controller();
 	virtual ~Controller();

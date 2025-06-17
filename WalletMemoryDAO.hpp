@@ -2,9 +2,9 @@
 #define WALLET_MEMORY_DAO_HPP
 
 #include <vector>
-#include <optional>
 #include "Wallet.hpp"
 #include "WalletDAO.hpp"
+using namespace std;
 
 class WalletMemoryDAO : public WalletDAO {
 private:
@@ -14,7 +14,7 @@ public:
     WalletMemoryDAO();
 
     bool addWallet(const Wallet& wallet);
-    std::optional<Wallet> getWalletById(int id) const;
+    virtual Wallet* getWalletById(int id);
     bool updateWallet(const Wallet& wallet);
     bool deleteWallet(int id);
     std::vector<Wallet> getAllWallets() const;
