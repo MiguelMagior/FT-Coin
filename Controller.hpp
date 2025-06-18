@@ -26,10 +26,11 @@ private:
 
 	//wallet
 	void newWallet();
-	void getWalletById();
+	bool getWalletById();
 	void seeWallet();
 	void editWallet();
 	void deleteWallet();
+
 public:
 	Controller();
 	virtual ~Controller();

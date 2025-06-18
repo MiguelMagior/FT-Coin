@@ -1,11 +1,12 @@
 #include "Controller.hpp"
 #include "Menu.hpp"
-#include <vector>
 #include "WalletMemoryDAO.hpp"
 #include "TransactionMemoryDAO.hpp"
 #include "OracleMemoryDAO.hpp"
 #include "Wallet.hpp"
+#include "Utils.hpp"
 
+#include <vector>
 #include <string>
 #include <iostream>
 using namespace std;
@@ -99,21 +100,22 @@ void Controller::newWallet(){
 	}
 }
 
-void Controller::getWalletById(){
+bool Controller::getWalletById(){
 	int id;
 	cin.ignore();
 	cout << " ID: ";
-	cin >> id;
+	id = validInt();
 
 	const Wallet* wallet = wallets->getWalletById(id);
 
-
 	if (wallet != nullptr) {
         cout << *wallet << endl;
+        return true;
 	}
 	else {
 		cout << "Wallet with ID " << id << " not found!" << endl;
-	 }
+		return false;
+	}
 }
 void Controller::seeWallet(){
 	cout << endl << " *** SEE WALLET ***" << endl;
@@ -123,35 +125,33 @@ void Controller::seeWallet(){
 void Controller::editWallet(){
 	string holderName, broker;
 	int id;
+	Wallet* wallet;
 
 	cout << " *** EDIT WALLET ***" << endl;
-	cout << " ID: ";
-	cin >> id;
 
-	Wallet* wallet = wallets->getWalletById(id);
+	if(getWalletById()){
+		wallet = wallets->getWalletById(id);
+		cin.ignore();
+		cout << " Holder Name: ";
+		getline(cin, holderName);
+		cout << " Broker: ";
+		getline(cin, broker);
 
-	cin.ignore();
-	cout << " Holder Name: ";
-	getline(cin, holderName);
-	cout << " Broker: ";
-	getline(cin, broker);
-
-	wallet->setHolderName(holderName);
-	wallet->setBroker(broker);
+		wallet->setHolderName(holderName);
+		wallet->setBroker(broker);
+	}
 }
 
 void Controller::deleteWallet(){
 	int id;
 
 	cout << " *** DELETE WALLET ***" << endl;
-	cout << " ID: ";
-	cin >> id;
 
-	switch(wallets->deleteWallet(id)){
-	case true:
+	if(getWalletById()){
+		wallets->deleteWallet(id);
 		cout << " Wallet deleted successfully" << endl;
-		break;
-	default:
+	}
+	else{
 		cout << " Error deleting wallet" << endl;
 	}
 }
