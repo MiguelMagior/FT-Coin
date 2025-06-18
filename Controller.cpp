@@ -68,7 +68,7 @@ void Controller::reportMenu(){
 		"Wallets by ID", "Wallets by Name", "Wallet Balance", "Transaction History", "Wallet Balance","Return"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste, &Controller::teste
+		&Controller::reportWalletById, &Controller::reportWalletByName, &Controller::teste, &Controller::teste, &Controller::teste
 	};
 	launchMenu(menuItens, "Transaction", functions);
 }
@@ -76,6 +76,7 @@ void Controller::menuHelp(){
 	teste();
 }
 
+// **** WALLET ****  //
 void Controller::newWallet(){
 	string holderName, broker;
 	Wallet newWallet;
@@ -153,5 +154,45 @@ void Controller::deleteWallet(){
 	}
 	else{
 		cout << " Error deleting wallet" << endl;
+	}
+}
+
+// **** REPORTS ****  //
+void Controller::reportWalletById(){
+	int index = 1;
+	Wallet* wallet = wallets->getWalletById(index);
+
+	cout << " *** Wallets by ID ***" << endl;
+	while(wallet != nullptr){
+		cout << *wallet << endl;
+		index++;
+		wallet = wallets->getWalletById(index);
+	}
+}
+/**
+void Controller::reportWalletByName(){
+	int index = 1;
+	vector<string> names;
+	Wallet* wallet = wallets->getWalletById(index);
+
+	while(wallet != nullptr){
+		names.insert(wallet->getHolderName());
+		index++;
+		wallet = wallets->getWalletById(index);
+	}
+
+	cout << " *** Wallets by Name ***" << endl;
+
+	for(int i = 0; i < names.size(); i++){
+		index = 1;
+		wallet = wallets->getWalletById(index);
+
+		while(wallet != nullptr){
+			if(wallet->getHolderName() == names.at(i)){
+				cout << *wallet << endl;
+			}
+			index++;
+			wallet = wallets->getWalletById(index);
+		}
 	}
 }

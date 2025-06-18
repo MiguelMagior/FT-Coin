@@ -31,6 +31,10 @@ private:
 	void editWallet();
 	void deleteWallet();
 
+	//report
+	void reportWalletById();
+	void reportWalletByName();
+
 public:
 	Controller();
 	virtual ~Controller();
