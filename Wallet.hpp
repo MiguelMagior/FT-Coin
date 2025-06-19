@@ -15,7 +15,7 @@ public:
     // Constructors
     Wallet();
     Wallet(int id, const string& holderName, const string& broker);
-
+    Wallet(const string& holderName, const string& broker);
     // Getters
     int getId() const;
     string getHolderName() const;

@@ -17,7 +17,7 @@ private:
 
 	void launchMenu(vector<string> menuItens, string title, vector<void (Controller::*)()> functions);
 	void teste();
-
+	void populate();
 	//menu
 	void walletMenu();
 	void transactionMenu();

@@ -10,6 +10,9 @@ int Wallet::lastWalletId = 0;
 Wallet::Wallet() : id(++lastWalletId), holderName(""), broker("") {
 }
 
+Wallet::Wallet(const string& holderName, const string& broker) : id(++lastWalletId), holderName(holderName), broker(broker){
+}
+
 // Parameterized constructor
 Wallet::Wallet(int id, const string& holderName, const string& broker)
     : id(id), holderName(holderName), broker(broker) {

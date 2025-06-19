@@ -77,7 +77,21 @@ void Controller::reportMenu(){
 	launchMenu(menuItens, "Transaction", functions);
 }
 void Controller::menuHelp(){
-	teste();
+	vector<string> menuItens{
+		"Tutorial", "Credits", "Test Populate", "Return"
+	};
+	vector<void (Controller::*)()> functions{
+		&Controller::teste, &Controller::teste, &Controller::populate
+	};
+	launchMenu(menuItens, "Help", functions);
+}
+
+void Controller::populate(){
+	wallets->addWallet(Wallet("Lucas", "Broker1"));
+	wallets->addWallet(Wallet("Adriane", "Broker1"));
+	wallets->addWallet(Wallet("Henrique", "Broker1"));
+
+	cout << "Memory populated" << endl;
 }
 
 // **** WALLET ****  //
@@ -185,10 +199,10 @@ void Controller::reportWalletByName(){
 
 	cout << " *** Wallets by Name ***" << endl;
 
-	for(int i = 0; i < names.size(); i++){
-		for(int j = 0; j < allWallets.size(); j++){
-			if(allWallets.at(j).getHolderName() == names.at(i)){
-				cout << allWallets.at(j) << endl;
+	for(int name = 0; name < names.size(); name++){
+		for(int wallet = 0; wallet < allWallets.size(); wallet++){
+			if(allWallets.at(wallet).getHolderName() == names.at(name)){
+				cout << allWallets.at(wallet) << endl;
 			}
 		}
 	}
