@@ -2,6 +2,8 @@
 #define WALLETDAO_HPP
 
 #include "Wallet.hpp"
+#include <vector>
+using namespace std;
 
 class WalletDAO{
 public:
@@ -12,5 +14,6 @@ public:
 	virtual Wallet* getWalletById(int id) = 0;
 	virtual bool updateWallet(const Wallet& wallet) = 0;
 	virtual bool deleteWallet(int id) = 0;
+	virtual vector<Wallet> getAllWallets() = 0;
 };
 #endif

@@ -28,7 +28,7 @@ bool Menu::isValidChoice(int choice){
 		return true;
 	}
 	else{
-		cout << " Opcao Invalida!" << endl;
+		cout << " Invalid option!" << endl;
 		return false;
 	}
 }

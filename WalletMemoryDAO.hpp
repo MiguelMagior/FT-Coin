@@ -8,7 +8,7 @@ using namespace std;
 
 class WalletMemoryDAO : public WalletDAO {
 private:
-    std::vector<Wallet> wallets;
+    vector<Wallet> wallets;
 
 public:
     WalletMemoryDAO();
@@ -17,7 +17,7 @@ public:
     virtual Wallet* getWalletById(int id);
     bool updateWallet(const Wallet& wallet);
     bool deleteWallet(int id);
-    std::vector<Wallet> getAllWallets() const;
+    vector<Wallet> getAllWallets();
 };
 
 #endif // WALLET_MEMORY_DAO_HPP

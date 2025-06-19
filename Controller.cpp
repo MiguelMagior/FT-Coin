@@ -17,6 +17,10 @@ Controller::Controller(){
 	oracle = new OracleMemoryDAO();
 }
 Controller::~Controller(){
+	delete oracle;
+	delete transactions;
+	delete wallets;
+	cout << " Program closed " << endl;
 }
 void Controller::teste(){
 	cout << "AINDA NÃO IMPLEMENTADO" << endl;
@@ -159,43 +163,33 @@ void Controller::deleteWallet(){
 
 // **** REPORTS ****  //
 void Controller::reportWalletById(){
-	int index = 1;
-	Wallet* wallet = wallets->getWalletById(index);
+	vector<Wallet> allWallets = wallets->getAllWallets();
 
 	cout << " *** Wallets by ID ***" << endl;
-	while(wallet != nullptr){
-		cout << *wallet << endl;
-		index++;
-		wallet = wallets->getWalletById(index);
+	for(int index = 0; index < allWallets.size(); index++){
+		cout << allWallets.at(index) << endl;
 	}
 }
 
 void Controller::reportWalletByName(){
-	int index = 1;
+	int index = 0;
 	vector<string> names;
-	Wallet* wallet = wallets->getWalletById(index);
+	vector<Wallet> allWallets = wallets->getAllWallets();
 
-	while(wallet != nullptr){
-		if(!isDuplicated(names,wallet->getHolderName())){
-			names.push_back(wallet->getHolderName());
+	for(int index = 0; index < allWallets.size(); index++){
+		if(!isDuplicated(names, allWallets.at(index).getHolderName())){
+			names.push_back(allWallets.at(index).getHolderName());
 		}
-		index++;
-		wallet = wallets->getWalletById(index);
 	}
 	names = sortAlphabetical(names);
 
 	cout << " *** Wallets by Name ***" << endl;
 
 	for(int i = 0; i < names.size(); i++){
-		index = 1;
-		wallet = wallets->getWalletById(index);
-
-		while(wallet != nullptr){
-			if(wallet->getHolderName() == names.at(i)){
-				cout << *wallet << endl;
+		for(int j = 0; j < allWallets.size(); j++){
+			if(allWallets.at(j).getHolderName() == names.at(i)){
+				cout << allWallets.at(j) << endl;
 			}
-			index++;
-			wallet = wallets->getWalletById(index);
 		}
 	}
 }

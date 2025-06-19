@@ -48,6 +48,6 @@ bool WalletMemoryDAO::deleteWallet(int id) {
     return false;
 }
 
-vector<Wallet> WalletMemoryDAO::getAllWallets() const {
+vector<Wallet> WalletMemoryDAO::getAllWallets(){
     return wallets;
 }
