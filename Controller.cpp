@@ -169,17 +169,20 @@ void Controller::reportWalletById(){
 		wallet = wallets->getWalletById(index);
 	}
 }
-/**
+
 void Controller::reportWalletByName(){
 	int index = 1;
 	vector<string> names;
 	Wallet* wallet = wallets->getWalletById(index);
 
 	while(wallet != nullptr){
-		names.insert(wallet->getHolderName());
+		if(!isDuplicated(names,wallet->getHolderName())){
+			names.push_back(wallet->getHolderName());
+		}
 		index++;
 		wallet = wallets->getWalletById(index);
 	}
+	names = sortAlphabetical(names);
 
 	cout << " *** Wallets by Name ***" << endl;
 

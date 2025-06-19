@@ -1,11 +1,12 @@
 #include "WalletMemoryDAO.hpp"
 #include <algorithm>
+using namespace std;
 
 WalletMemoryDAO::WalletMemoryDAO() : wallets() {}
 
 bool WalletMemoryDAO::addWallet(const Wallet& wallet) {
     // Check if id already exists
-    auto it = std::find_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
+    auto it = find_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
         return w.getId() == wallet.getId();
     });
     if (it != wallets.end()) {
@@ -16,7 +17,7 @@ bool WalletMemoryDAO::addWallet(const Wallet& wallet) {
 }
 
 Wallet* WalletMemoryDAO::getWalletById(int id){
-	auto it = std::find_if(wallets.begin(), wallets.end(),[id](const Wallet& w) { return w.getId() == id; });
+	auto it = find_if(wallets.begin(), wallets.end(),[id](const Wallet& w) { return w.getId() == id; });
 
 	if (it != wallets.end()) {
 		return &(*it);
@@ -25,7 +26,7 @@ Wallet* WalletMemoryDAO::getWalletById(int id){
 }
 
 bool WalletMemoryDAO::updateWallet(const Wallet& wallet) {
-    auto it = std::find_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
+    auto it = find_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
         return w.getId() == wallet.getId();
     });
     if (it != wallets.end()) {
@@ -37,7 +38,7 @@ bool WalletMemoryDAO::updateWallet(const Wallet& wallet) {
 }
 
 bool WalletMemoryDAO::deleteWallet(int id) {
-    auto it = std::remove_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
+    auto it = remove_if(wallets.begin(), wallets.end(), [&](const Wallet& w) {
         return w.getId() == id;
     });
     if (it != wallets.end()) {
@@ -47,6 +48,6 @@ bool WalletMemoryDAO::deleteWallet(int id) {
     return false;
 }
 
-std::vector<Wallet> WalletMemoryDAO::getAllWallets() const {
+vector<Wallet> WalletMemoryDAO::getAllWallets() const {
     return wallets;
 }

@@ -2,7 +2,6 @@
 #define TRANSACTION_MEMORY_DAO_HPP
 
 #include <vector>
-#include <optional>
 #include "Transaction.hpp"
 #include "TransactionDAO.hpp"
 
@@ -16,7 +15,7 @@ public:
     TransactionMemoryDAO();
 
     bool addTransaction(const Transaction& transaction);
-    optional<Transaction> getTransactionById(int id) const;
+    Transaction* getTransactionById(int id);
     vector<Transaction> getTransactionsByWalletId(int walletId) const;
     vector<Transaction> getAllTransactions() const;
     bool deleteTransaction(int id);

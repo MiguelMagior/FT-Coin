@@ -1,4 +1,8 @@
 #include "OracleMemoryDAO.hpp"
+#include <vector>
+#include <string>
+#include <algorithm>
+using namespace std;
 
 OracleMemoryDAO::OracleMemoryDAO() {}
 
@@ -12,16 +16,16 @@ bool OracleMemoryDAO::addOracle(const Oracle& oracle) {
     return true;
 }
 
-std::optional<Oracle> OracleMemoryDAO::getOracleByDate(const std::string& date) const {
-    for (const auto& o : oracles) {
-        if (o.getDate() == date) {
-            return o;
-        }
-    }
-    return std::nullopt;
+Oracle* OracleMemoryDAO::getOracleByDate(const string& date){
+	auto it = find_if(oracles.begin(), oracles.end(),[date](const Oracle& o) {return o.getDate() == date; });
+
+	if (it != oracles.end()) {
+		return &(*it);
+	}
+    return nullptr;
 }
 
-std::vector<Oracle> OracleMemoryDAO::getAllOracles() const {
+vector<Oracle> OracleMemoryDAO::getAllOracles() const {
     return oracles;
 }
 
@@ -35,7 +39,7 @@ bool OracleMemoryDAO::updateOracle(const Oracle& oracle) {
     return false;
 }
 
-bool OracleMemoryDAO::deleteOracle(const std::string& date) {
+bool OracleMemoryDAO::deleteOracle(const string& date) {
     for (auto it = oracles.begin(); it != oracles.end(); ++it) {
         if (it->getDate() == date) {
             oracles.erase(it);

@@ -1,4 +1,6 @@
 #include "TransactionMemoryDAO.hpp"
+#include <algorithm>
+using namespace std;
 
 TransactionMemoryDAO::TransactionMemoryDAO() {}
 
@@ -12,13 +14,13 @@ bool TransactionMemoryDAO::addTransaction(const Transaction& transaction) {
     return true;
 }
 
-optional<Transaction> TransactionMemoryDAO::getTransactionById(int id) const {
-    for (const auto& t : transactions) {
-        if (t.getTransactionId() == id) {
-            return t;
-        }
-    }
-    return nullopt;
+Transaction* TransactionMemoryDAO::getTransactionById(int id){
+	auto it = find_if(transactions.begin(), transactions.end(),[id](const Transaction& t) { return t.getTransactionId() == id; });
+
+	if (it != transactions.end()) {
+		return &(*it);
+	}
+    return nullptr;
 }
 
 vector<Transaction> TransactionMemoryDAO::getTransactionsByWalletId(int walletId) const {

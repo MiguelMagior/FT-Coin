@@ -2,23 +2,25 @@
 #define ORACLE_DB_DAO_HPP
 
 #include <vector>
-#include <optional>
 #include <string>
 #include <memory>
 #include <mariadb/conncpp.hpp>
+using namespace std;
 
-class OracleDBDAO {
+#include "Oracle.hpp"
+
+class OracleDBDAO : public OracleDAO{
 private:
-    std::unique_ptr<sql::Connection> conn;
+    unique_ptr<sql::Connection> conn;
 
 public:
-    OracleDBDAO(const std::string& uri, const std::string& user, const std::string& password, const std::string& database);
+    OracleDBDAO(const string& uri, const string& user, const string& password, const string& database);
 
-    bool addOracleRecord(const std::string& date, double rate);
-    std::optional<std::pair<std::string, double>> getOracleRecordByDate(const std::string& date) const;
-    bool updateOracleRecord(const std::string& date, double rate);
-    bool deleteOracleRecord(const std::string& date);
-    std::vector<std::pair<std::string, double>> getAllOracleRecords() const;
+    bool addOracleRecord(const string& date, double rate);
+    optional<pair<string, double>> getOracleRecordByDate(const string& date) const;
+    bool updateOracleRecord(const string& date, double rate);
+    bool deleteOracleRecord(const string& date);
+    vector<pair<string, double>> getAllOracleRecords() const;
 };
 
 #endif // ORACLE_DB_DAO_HPP

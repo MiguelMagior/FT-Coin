@@ -7,18 +7,20 @@
 #include "Oracle.hpp"
 #include "OracleMemoryDAO.hpp"
 #include "OracleDAO.hpp"
+using namespace std;
+
 class OracleMemoryDAO : public OracleDAO{
 private:
-    std::vector<Oracle> oracles;
+    vector<Oracle> oracles;
 
 public:
     OracleMemoryDAO();
 
     bool addOracle(const Oracle& oracle);
-    std::optional<Oracle> getOracleByDate(const std::string& date) const;
-    std::vector<Oracle> getAllOracles() const;
+    Oracle* getOracleByDate(const string& date);
+    vector<Oracle> getAllOracles() const;
     bool updateOracle(const Oracle& oracle);
-    bool deleteOracle(const std::string& date);
+    bool deleteOracle(const string& date);
 };
 
 #endif // ORACLE_MEMORY_DAO_HPP

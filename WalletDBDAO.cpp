@@ -11,7 +11,7 @@ WalletDBDAO::WalletDBDAO() {
     string host = "143.106.234.64";
     string user = "Pool_25_A03";
     string password = "SwNWcvIM94";
-    string database = "test_db";
+    string database = "Pool_25_A03";
 
     // Declara driver como variável local aqui
     sql::Driver* driver = sql::mariadb::get_driver_instance();
