@@ -1,0 +1,15 @@
+ ******************* CREDITS ****************************
+ 	UNICAMP - State University of Campinas
+ 		FT - School of Technology
+ 
+ SI300A - Objet-Oriented Programming I - 2025-1ºSemester
+ Prof. Dr. André F. de Angelis 
+ 
+ Group 3:
+ 	Daniel Rodrigo Vicente de Oliveira Lima - 175259
+	Darlan Peres Maia - 232871
+	Ellen Carol Valença Rodrigues - 258050
+	Luiz Otávio Xavier Dos Santos 281435
+	Miguel Augusto Magior 185570
+	Vinicius Nascimento De Souza 245391
+ *********************************************************

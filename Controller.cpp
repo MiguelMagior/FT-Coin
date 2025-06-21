@@ -78,10 +78,10 @@ void Controller::reportMenu(){
 }
 void Controller::menuHelp(){
 	vector<string> menuItens{
-		"Tutorial", "Credits", "Test Populate", "Return"
+		"Features Help", "Credits", "Test Populate", "Return"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::teste, &Controller::teste, &Controller::populate
+		&Controller::printHelp, &Controller::printCredits, &Controller::populate
 	};
 	launchMenu(menuItens, "Help", functions);
 }
@@ -91,7 +91,7 @@ void Controller::populate(){
 	wallets->addWallet(Wallet("Adriane", "Broker1"));
 	wallets->addWallet(Wallet("Henrique", "Broker1"));
 
-	cout << "Memory populated" << endl;
+	cout << " Memory populated" << endl;
 }
 
 // **** WALLET ****  //
@@ -206,4 +206,13 @@ void Controller::reportWalletByName(){
 			}
 		}
 	}
+}
+
+// *** HELP ***
+void Controller::printCredits(){
+	printFile("credits.txt");
+}
+
+void Controller::printHelp(){
+	printFile("help.txt");
 }

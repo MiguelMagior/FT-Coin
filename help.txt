@@ -1,0 +1,12 @@
+ ************************ HELP **********************************
+ FT-COIN
+ Wallet Managment System in C++ language.
+ ****************************************************************
+ 1 - Wallet: create, consult, edit or remove a wallet.
+ 2 - Transaction: associate a transaction(purchase or sale)
+ with a wallet.
+ 3 - Reports: generate various reports to summarize the wallets
+ historic.
+ 4 - Help: information about the system and the authors.
+ 5 - Close: close the program.
+ *****************************************************************

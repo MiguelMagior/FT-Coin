@@ -15,5 +15,6 @@ template<typename Type> bool isDuplicated(vector<Type> vec, Type data){
 	return isDuplicated;
 }
 vector<string> sortAlphabetical(vector<string> vec);
+void printFile(string fileName);
 
 #endif

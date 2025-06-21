@@ -35,6 +35,9 @@ private:
 	void reportWalletById();
 	void reportWalletByName();
 
+	//help
+	void printCredits();
+	void printHelp();
 public:
 	Controller();
 	virtual ~Controller();

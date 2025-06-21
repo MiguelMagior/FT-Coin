@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 int validInt(){
@@ -26,4 +27,25 @@ vector<string> sortAlphabetical(vector<string> vec){
         }
 	}
 	return vec;
+}
+void printFile(string fileName){
+	fstream file;
+	string line;
+
+	file.exceptions(fstream::failbit | fstream::badbit);
+
+	try{
+		file.open(fileName);
+		while(getline(file,line)){
+			cout << line << endl;
+		}
+		file.close();
+	}
+	catch(const exception& e){
+		if(file.is_open()){
+			file.close();
+		}
+		cerr << " Error acessing File " << fileName << ": "
+			<< e.what() << endl;
+	}
 }
