@@ -1,90 +1,91 @@
 #include "OracleDBDAO.hpp"
 #include <iostream>
+using namespace std;
 
-OracleDBDAO::OracleDBDAO(const std::string& uri, const std::string& user, const std::string& password, const std::string& database) {
+OracleDBDAO::OracleDBDAO(const string& uri, const string& user, const string& password, const string& database) {
     try {
         sql::Driver* driver = sql::mariadb::get_driver_instance();
-        conn = std::unique_ptr<sql::Connection>(driver->connect(uri, user, password));
+        conn = unique_ptr<sql::Connection>(driver->connect(uri, user, password));
         conn->setSchema(database);
     } catch (sql::SQLException& e) {
-        std::cerr << "Connection error: " << e.what() << std::endl;
+        cerr << "Connection error: " << e.what() << endl;
         throw;
     }
 }
 
-bool OracleDBDAO::addOracleRecord(const std::string& date, double rate) {
+bool OracleDBDAO::addOracleRecord(const string& date, double rate) {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("INSERT INTO Oracle (Data, Taxa) VALUES (?, ?)"));
         pstmt->setString(1, date);
         pstmt->setDouble(2, rate);
         pstmt->executeUpdate();
         return true;
     } catch (sql::SQLException& e) {
-        std::cerr << "Insert error: " << e.what() << std::endl;
+        cerr << "Insert error: " << e.what() << endl;
         return false;
     }
 }
 
-std::optional<std::pair<std::string, double>> OracleDBDAO::getOracleRecordByDate(const std::string& date) const {
+optional<pair<string, double>> OracleDBDAO::getOracleRecordByDate(const string& date) const {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("SELECT Data, Taxa FROM Oracle WHERE Data = ?"));
         pstmt->setString(1, date);
-        std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+        unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
         if (res->next()) {
-            std::string d(res->getString("Data").c_str());
+            string d(res->getString("Data").c_str());
             double rate = res->getDouble("Taxa");
-            return std::make_pair(d, rate);
+            return make_pair(d, rate);
         }
-        return std::nullopt;
+        return nullopt;
     } catch (sql::SQLException& e) {
-        std::cerr << "Query error: " << e.what() << std::endl;
-        return std::nullopt;
+        cerr << "Query error: " << e.what() << endl;
+        return nullopt;
     }
 }
 
-bool OracleDBDAO::updateOracleRecord(const std::string& date, double rate) {
+bool OracleDBDAO::updateOracleRecord(const string& date, double rate) {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("UPDATE Oracle SET Taxa = ? WHERE Data = ?"));
         pstmt->setDouble(1, rate);
         pstmt->setString(2, date);
         int affectedRows = pstmt->executeUpdate();
         return affectedRows > 0;
     } catch (sql::SQLException& e) {
-        std::cerr << "Update error: " << e.what() << std::endl;
+        cerr << "Update error: " << e.what() << endl;
         return false;
     }
 }
 
-bool OracleDBDAO::deleteOracleRecord(const std::string& date) {
+bool OracleDBDAO::deleteOracleRecord(const string& date) {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("DELETE FROM Oracle WHERE Data = ?"));
         pstmt->setString(1, date);
         int affectedRows = pstmt->executeUpdate();
         return affectedRows > 0;
     } catch (sql::SQLException& e) {
-        std::cerr << "Delete error: " << e.what() << std::endl;
+        cerr << "Delete error: " << e.what() << endl;
         return false;
     }
 }
 
-std::vector<std::pair<std::string, double>> OracleDBDAO::getAllOracleRecords() const {
-    std::vector<std::pair<std::string, double>> records;
+vector<pair<string, double>> OracleDBDAO::getAllOracleRecords() const {
+    vector<pair<string, double>> records;
     try {
-        std::unique_ptr<sql::Statement> stmt(conn->createStatement());
-        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery("SELECT Data, Taxa FROM Oracle"));
+        unique_ptr<sql::Statement> stmt(conn->createStatement());
+        unique_ptr<sql::ResultSet> res(stmt->executeQuery("SELECT Data, Taxa FROM Oracle"));
 
         while (res->next()) {
-            std::string d(res->getString("Data").c_str());
+            string d(res->getString("Data").c_str());
             double rate = res->getDouble("Taxa");
             records.emplace_back(d, rate);
         }
     } catch (sql::SQLException& e) {
-        std::cerr << "Select all error: " << e.what() << std::endl;
+        cerr << "Select all error: " << e.what() << endl;
     }
     return records;
 }

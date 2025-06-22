@@ -23,7 +23,7 @@ Transaction* TransactionMemoryDAO::getTransactionById(int id){
     return nullptr;
 }
 
-vector<Transaction> TransactionMemoryDAO::getTransactionsByWalletId(int walletId) const {
+vector<Transaction> TransactionMemoryDAO::getTransactionsByWalletId(int walletId){
     vector<Transaction> result;
     for (const auto& t : transactions) {
         if (t.getWalletId() == walletId) {
@@ -33,7 +33,7 @@ vector<Transaction> TransactionMemoryDAO::getTransactionsByWalletId(int walletId
     return result;
 }
 
-vector<Transaction> TransactionMemoryDAO::getAllTransactions() const {
+vector<Transaction> TransactionMemoryDAO::getAllTransactions(){
     return transactions;
 }
 

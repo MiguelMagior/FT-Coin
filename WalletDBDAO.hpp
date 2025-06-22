@@ -7,21 +7,23 @@
 #include <memory>
 #include <mariadb/conncpp.hpp>
 #include "Wallet.hpp"
+#include "WalletDAO.hpp"
+using namespace std;
 
-class WalletDBDAO{
+class WalletDBDAO : public WalletDAO{
 private:
-    std::unique_ptr<sql::Connection> conn;
+    unique_ptr<sql::Connection> conn;
 
 public:
     WalletDBDAO();  //Construtor padrão
-    WalletDBDAO(const std::string& uri, const std::string& user, const std::string& password, const std::string& database);
+    WalletDBDAO(const string& uri, const string& user, const string& password, const string& database);
     ~WalletDBDAO();
 
     bool addWallet(const Wallet& wallet);
-    std::optional<Wallet> getWalletById(int id) const;
+    Wallet* getWalletById(int id);
     bool updateWallet(const Wallet& wallet);
     bool deleteWallet(int id);
-    std::vector<Wallet> getAllWallets() const;
+    vector<Wallet> getAllWallets();
 };
 
 #endif // WALLET_DB_DAO_HPP

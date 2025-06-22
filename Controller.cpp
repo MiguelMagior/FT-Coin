@@ -5,26 +5,33 @@
 #include "OracleMemoryDAO.hpp"
 #include "Wallet.hpp"
 #include "Utils.hpp"
+#include "DataBaseType.hpp"
 
 #include <vector>
 #include <string>
 #include <iostream>
 using namespace std;
 
-Controller::Controller(){
-	wallets = new WalletMemoryDAO();
-	transactions = new TransactionMemoryDAO();
-	oracle = new OracleMemoryDAO();
+Controller::Controller(DataBaseType dbType){
+	switch(dbType){
+	case MEMORY:
+		wallets = new WalletMemoryDAO();
+		transactions = new TransactionMemoryDAO();
+		oracle = new OracleMemoryDAO();
+	}
 }
+
 Controller::~Controller(){
 	delete oracle;
 	delete transactions;
 	delete wallets;
 	cout << " Program closed " << endl;
 }
+
 void Controller::teste(){
 	cout << "AINDA NÃO IMPLEMENTADO" << endl;
 }
+
 void Controller::start(){
 	vector<string> menuItens{
 		"Wallet", "Transaction", "Report", "Help", "Close"
@@ -76,6 +83,7 @@ void Controller::reportMenu(){
 	};
 	launchMenu(menuItens, "Transaction", functions);
 }
+
 void Controller::menuHelp(){
 	vector<string> menuItens{
 		"Features Help", "Credits", "Test Populate", "Return"
@@ -136,6 +144,7 @@ bool Controller::getWalletById(){
 		return false;
 	}
 }
+
 void Controller::seeWallet(){
 	cout << endl << " *** SEE WALLET ***" << endl;
 	getWalletById();

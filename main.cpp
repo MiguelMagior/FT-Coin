@@ -1,8 +1,9 @@
 #include "Controller.hpp"
-#include "Menu.hpp"
+#include "DataBaseType.hpp"
 
 int main(){
-    Controller a;
-    a.start();
+    Controller* control = new Controller(MEMORY);
+    control->start();
+    delete(control);
 	return 0;
 }

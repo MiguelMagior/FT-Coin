@@ -1,11 +1,8 @@
 #include "WalletDBDAO.hpp"
 #include <iostream>
-
-using std::cerr;
-using std::endl;
-using std::string;
-using std::optional;
-using std::vector;
+#include <vector>
+#include <memory>
+using namespace std;
 
 WalletDBDAO::WalletDBDAO() {
     string host = "143.106.234.64";
@@ -15,14 +12,14 @@ WalletDBDAO::WalletDBDAO() {
 
     // Declara driver como variável local aqui
     sql::Driver* driver = sql::mariadb::get_driver_instance();
-    conn = std::unique_ptr<sql::Connection>(driver->connect(host, user, password));
+    conn = unique_ptr<sql::Connection>(driver->connect(host, user, password));
     conn->setSchema(database);
 }
 
 WalletDBDAO::WalletDBDAO(const string& uri, const string& user, const string& password, const string& database) {
     try {
         sql::Driver* driver = sql::mariadb::get_driver_instance();
-        conn = std::unique_ptr<sql::Connection>(driver->connect(uri, user, password));
+        conn = unique_ptr<sql::Connection>(driver->connect(uri, user, password));
         conn->setSchema(database);
     } catch (sql::SQLException& e) {
         cerr << "Connection error: " << e.what() << endl;
@@ -38,7 +35,7 @@ WalletDBDAO::~WalletDBDAO() {
 
 bool WalletDBDAO::addWallet(const Wallet& wallet) {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("INSERT INTO Carteira (Identificador, Nome_do_titular, Corretora) VALUES (?, ?, ?)"));
         pstmt->setInt(1, wallet.getId());
         pstmt->setString(2, wallet.getHolderName());
@@ -51,35 +48,35 @@ bool WalletDBDAO::addWallet(const Wallet& wallet) {
     }
 }
 
-optional<Wallet> WalletDBDAO::getWalletById(int id) const {
+Wallet* WalletDBDAO::getWalletById(int id){
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("SELECT Identificador, Nome_do_titular, Corretora FROM Carteira WHERE Identificador = ?"));
         pstmt->setInt(1, id);
-        std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+        unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
         if (res->next()) {
             Wallet wallet;
             wallet.setId(res->getInt("Identificador"));
 
-            std::string holderName = res->getString("Nome_do_titular").c_str();
-            std::string broker = res->getString("Corretora").c_str();
+            string holderName = res->getString("Nome_do_titular").c_str();
+            string broker = res->getString("Corretora").c_str();
 
             wallet.setHolderName(holderName);
             wallet.setBroker(broker);
 
             return wallet;
         }
-        return std::nullopt;
+        return nullptr;
     } catch (sql::SQLException& e) {
         cerr << "Query error: " << e.what() << endl;
-        return std::nullopt;
+        return nullptr;
     }
 }
 
 bool WalletDBDAO::updateWallet(const Wallet& wallet) {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("UPDATE Carteira SET Nome_do_titular = ?, Corretora = ? WHERE Identificador = ?"));
         pstmt->setString(1, wallet.getHolderName());
         pstmt->setString(2, wallet.getBroker());
@@ -94,7 +91,7 @@ bool WalletDBDAO::updateWallet(const Wallet& wallet) {
 
 bool WalletDBDAO::deleteWallet(int id) {
     try {
-        std::unique_ptr<sql::PreparedStatement> pstmt(
+        unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("DELETE FROM Carteira WHERE Identificador = ?"));
         pstmt->setInt(1, id);
         int affectedRows = pstmt->executeUpdate();
@@ -105,18 +102,18 @@ bool WalletDBDAO::deleteWallet(int id) {
     }
 }
 
-vector<Wallet> WalletDBDAO::getAllWallets() const {
+vector<Wallet> WalletDBDAO::getAllWallets(){
     vector<Wallet> wallets;
     try {
-        std::unique_ptr<sql::Statement> stmt(conn->createStatement());
-        std::unique_ptr<sql::ResultSet> res(stmt->executeQuery("SELECT Identificador, Nome_do_titular, Corretora FROM Carteira"));
+        unique_ptr<sql::Statement> stmt(conn->createStatement());
+        unique_ptr<sql::ResultSet> res(stmt->executeQuery("SELECT Identificador, Nome_do_titular, Corretora FROM Carteira"));
 
         while (res->next()) {
             Wallet wallet;
             wallet.setId(res->getInt("Identificador"));
 
-            std::string holderName = res->getString("Nome_do_titular").c_str();
-            std::string broker = res->getString("Corretora").c_str();
+            string holderName = res->getString("Nome_do_titular").c_str();
+            string broker = res->getString("Corretora").c_str();
 
             wallet.setHolderName(holderName);
             wallet.setBroker(broker);

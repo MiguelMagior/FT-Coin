@@ -4,6 +4,7 @@
 #include "WalletDAO.hpp"
 #include "TransactionDAO.hpp"
 #include "OracleDAO.hpp"
+#include "DataBaseType.hpp"
 
 #include <string>
 #include <vector>
@@ -39,7 +40,7 @@ private:
 	void printCredits();
 	void printHelp();
 public:
-	Controller();
+	Controller(DataBaseType dbType);
 	virtual ~Controller();
 	void start();
 

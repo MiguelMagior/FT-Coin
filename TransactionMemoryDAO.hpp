@@ -16,8 +16,8 @@ public:
 
     bool addTransaction(const Transaction& transaction);
     Transaction* getTransactionById(int id);
-    vector<Transaction> getTransactionsByWalletId(int walletId) const;
-    vector<Transaction> getAllTransactions() const;
+    vector<Transaction> getTransactionsByWalletId(int walletId);
+    vector<Transaction> getAllTransactions();
     bool deleteTransaction(int id);
 };
 
