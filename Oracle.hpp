@@ -2,22 +2,23 @@
 #define ORACLE_HPP
 
 #include <string>
+using namespace std;
 
 class Oracle {
 private:
-    std::string date;
+    string date;
     double rate;
 
 public:
     Oracle();
-    Oracle(const std::string& date, double rate);
+    Oracle(const string& date, double rate);
 
     // Getters
-    std::string getDate() const;
+    string getDate() const;
     double getRate() const;
 
     // Setters
-    void setDate(const std::string& date);
+    void setDate(const string& date);
     void setRate(double rate);
 };
 

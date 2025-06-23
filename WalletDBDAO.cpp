@@ -56,14 +56,14 @@ Wallet* WalletDBDAO::getWalletById(int id){
         unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
         if (res->next()) {
-            Wallet wallet;
-            wallet.setId(res->getInt("Identificador"));
+            Wallet* wallet;
+            wallet->setId(res->getInt("Identificador"));
 
             string holderName = res->getString("Nome_do_titular").c_str();
             string broker = res->getString("Corretora").c_str();
 
-            wallet.setHolderName(holderName);
-            wallet.setBroker(broker);
+            wallet->setHolderName(holderName);
+            wallet->setBroker(broker);
 
             return wallet;
         }

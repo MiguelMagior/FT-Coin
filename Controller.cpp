@@ -1,11 +1,16 @@
 #include "Controller.hpp"
 #include "Menu.hpp"
-#include "WalletMemoryDAO.hpp"
-#include "TransactionMemoryDAO.hpp"
-#include "OracleMemoryDAO.hpp"
-#include "Wallet.hpp"
 #include "Utils.hpp"
 #include "DataBaseType.hpp"
+
+#include "WalletMemoryDAO.hpp"
+#include "WalletDBDAO.hpp"
+
+#include "TransactionMemoryDAO.hpp"
+#include "TransactionDBDAO.hpp"
+
+#include "OracleMemoryDAO.hpp"
+#include "OracleDBDAO.hpp"
 
 #include <vector>
 #include <string>
@@ -13,12 +18,35 @@
 using namespace std;
 
 Controller::Controller(DataBaseType dbType){
-	switch(dbType){
-	case MEMORY:
-		wallets = new WalletMemoryDAO();
-		transactions = new TransactionMemoryDAO();
-		oracle = new OracleMemoryDAO();
-	}
+	try {
+		switch(dbType) {
+			case MEMORY:
+                wallets = new WalletMemoryDAO();
+                transactions = new TransactionMemoryDAO();
+                oracle = new OracleMemoryDAO();
+                break;
+
+            case DB: {
+                const string host = "143.106.234.64";
+                const string user = "Pool_25_A03";
+                const string password = "SwNWcvIM94";
+                const string database = "Pool_25_A03";
+
+                wallets = new WalletDBDAO(host, user, password, database);
+                transactions = new TransactionDBDAO(host, user, password, database);
+                oracle = new OracleDBDAO(host, user, password, database);
+                break;
+            }
+
+            default:
+                throw invalid_argument(" Invalid database type");
+        }
+    } catch (const exception& e) {
+        delete wallets;
+        delete transactions;
+        delete oracle;
+        throw;
+    }
 }
 
 Controller::~Controller(){

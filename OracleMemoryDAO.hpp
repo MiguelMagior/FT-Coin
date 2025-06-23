@@ -18,7 +18,7 @@ public:
 
     bool addOracle(const Oracle& oracle);
     Oracle* getOracleByDate(const string& date);
-    vector<Oracle> getAllOracles() const;
+    vector<Oracle> getAllOracles();
     bool updateOracle(const Oracle& oracle);
     bool deleteOracle(const string& date);
 };

@@ -8,19 +8,20 @@
 using namespace std;
 
 #include "Oracle.hpp"
+#include "OracleDAO.hpp"
 
-class OracleDBDAO : public OracleDAO{
+class OracleDBDAO : public OracleDAO {
 private:
     unique_ptr<sql::Connection> conn;
 
 public:
     OracleDBDAO(const string& uri, const string& user, const string& password, const string& database);
 
-    bool addOracleRecord(const string& date, double rate);
-    Oracle* getOracleRecordByDate(const string& date);
-    bool updateOracleRecord(const string& date, double rate);
-    bool deleteOracleRecord(const string& date);
-    vector<Oracle> getAllOracleRecords();
+    bool addOracle(const Oracle& oracle);
+    Oracle* getOracleByDate(const string& date);
+    bool updateOracle(const Oracle& oracle);
+    bool deleteOracle(const string& date);
+    vector<Oracle> getAllOracles();
 };
 
 #endif // ORACLE_DB_DAO_HPP

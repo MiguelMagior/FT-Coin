@@ -1,10 +1,11 @@
 #include "Oracle.hpp"
+using namespace std;
 
 Oracle::Oracle() : date(""), rate(0.0) {}
 
-Oracle::Oracle(const std::string& date, double rate) : date(date), rate(rate) {}
+Oracle::Oracle(const string& date, double rate) : date(date), rate(rate) {}
 
-std::string Oracle::getDate() const {
+string Oracle::getDate() const {
     return date;
 }
 
@@ -12,7 +13,7 @@ double Oracle::getRate() const {
     return rate;
 }
 
-void Oracle::setDate(const std::string& date) {
+void Oracle::setDate(const string& date) {
     this->date = date;
 }
 

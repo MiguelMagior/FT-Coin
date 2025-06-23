@@ -25,7 +25,7 @@ Oracle* OracleMemoryDAO::getOracleByDate(const string& date){
     return nullptr;
 }
 
-vector<Oracle> OracleMemoryDAO::getAllOracles() const {
+vector<Oracle> OracleMemoryDAO::getAllOracles()  {
     return oracles;
 }
 

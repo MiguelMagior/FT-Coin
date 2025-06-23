@@ -14,7 +14,7 @@ public:
 
 	virtual bool addOracle(const Oracle& oracle) = 0;
 	virtual Oracle* getOracleByDate(const string& date) = 0;
-	virtual vector<Oracle> getAllOracles() const = 0;
+	virtual vector<Oracle> getAllOracles()= 0;
 	virtual bool updateOracle(const Oracle& oracle) = 0;
 	virtual bool deleteOracle(const string& date) = 0;
 };

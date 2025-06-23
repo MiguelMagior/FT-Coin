@@ -1,5 +1,6 @@
 #include "TransactionDBDAO.hpp"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 TransactionDBDAO::TransactionDBDAO(const string& uri, const string& user, const string& password, const string& database) {
@@ -8,20 +9,20 @@ TransactionDBDAO::TransactionDBDAO(const string& uri, const string& user, const 
         conn = unique_ptr<sql::Connection>(driver->connect(uri, user, password));
         conn->setSchema(database);
     } catch (sql::SQLException& e) {
-        cerr << "Connection error: " << e.what() << endl;
+        cerr << "Connectvector<tuple<int, int, string, char, double>>ion error: " << e.what() << endl;
         throw;
     }
 }
 
-bool TransactionDBDAO::addTransaction(int walletId, int transactionId, const string& date, char type, double amount) {
+bool TransactionDBDAO::addTransaction(const Transaction& transaction) {
     try {
         unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("INSERT INTO Transacao (carteira_id, id, data, tipo, valor) VALUES (?, ?, ?, ?, ?)"));
-        pstmt->setInt(1, walletId);
-        pstmt->setInt(2, transactionId);
-        pstmt->setString(3, date);
-        pstmt->setString(4, string(1, type));
-        pstmt->setDouble(5, amount);
+        pstmt->setInt(1, transaction.getWalletId());
+        pstmt->setInt(2, transaction.getTransactionId());
+        pstmt->setString(3, transaction.getDate());
+        pstmt->setString(4, string(1, transaction.getType()));
+        pstmt->setDouble(5, transaction.getAmount());
         pstmt->executeUpdate();
         return true;
     } catch (sql::SQLException& e) {
@@ -30,14 +31,12 @@ bool TransactionDBDAO::addTransaction(int walletId, int transactionId, const str
     }
 }
 
-optional<tuple<int, int, string, char, double>> TransactionDBDAO::getTransaction(int walletId, int transactionId) const {
+Transaction* TransactionDBDAO::getTransactionById(int id){
     try {
-        unique_ptr<sql::PreparedStatement> pstmt(
-            conn->prepareStatement("SELECT carteira_id, id, data, tipo, valor FROM Transacao WHERE carteira_id = ? AND id = ?"));
-        pstmt->setInt(1, walletId);
-        pstmt->setInt(2, transactionId);
-        unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
-
+    	unique_ptr<sql::PreparedStatement> pstmt(
+    	            conn->prepareStatement("SELECT carteira_id, id, data, tipo, valor FROM Transacao WHERE id = ?"));
+    	pstmt->setInt(1, id);
+    	unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
         if (res->next()) {
             int wId = res->getInt("carteira_id");
             int tId = res->getInt("id");
@@ -45,12 +44,13 @@ optional<tuple<int, int, string, char, double>> TransactionDBDAO::getTransaction
             string typeStr = string(res->getString("tipo").c_str());
             char type = !typeStr.empty() ? typeStr[0] : ' ';
             double amount = res->getDouble("valor");
-            return make_tuple(wId, tId, date, type, amount);
+            Transaction* transaction = new Transaction(wId, tId, date, type, amount);
+            return transaction;
         }
-        return nullopt;
+        return nullptr;
     } catch (sql::SQLException& e) {
         cerr << "Query error: " << e.what() << endl;
-        return nullopt;
+        return nullptr;
     }
 }
 
@@ -71,22 +71,42 @@ bool TransactionDBDAO::updateTransaction(int walletId, int transactionId, const 
     }
 }
 
-bool TransactionDBDAO::deleteTransaction(int walletId, int transactionId) {
+bool TransactionDBDAO::deleteTransaction(int id) {
     try {
         unique_ptr<sql::PreparedStatement> pstmt(
-            conn->prepareStatement("DELETE FROM Transacao WHERE carteira_id = ? AND id = ?"));
-        pstmt->setInt(1, walletId);
-        pstmt->setInt(2, transactionId);
-        int affectedRows = pstmt->executeUpdate();
-        return affectedRows > 0;
+            conn->prepareStatement("DELETE FROM Transacao WHERE id = ?"));
+        pstmt->setInt(1, id);
+        int rowsAffected = pstmt->executeUpdate();
+        return (rowsAffected > 0);
     } catch (sql::SQLException& e) {
         cerr << "Delete error: " << e.what() << endl;
         return false;
     }
 }
+vector<Transaction> TransactionDBDAO::getAllTransactions() {
+    vector<Transaction> transactions;
+    try {
+        unique_ptr<sql::PreparedStatement> pstmt(
+            conn->prepareStatement("SELECT carteira_id, id, data, tipo, valor FROM Transacao"));
+        unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
-vector<tuple<int, int, string, char, double>> TransactionDBDAO::getAllTransactions(int walletId) const {
-    vector<tuple<int, int, string, char, double>> transactions;
+        while (res->next()) {
+            int wId = res->getInt("carteira_id");
+            int tId = res->getInt("id");
+            string date = string(res->getString("data").c_str());
+            string typeStr = string(res->getString("tipo").c_str());
+            char type = !typeStr.empty() ? typeStr[0] : ' ';
+            double amount = res->getDouble("valor");
+            transactions.emplace_back(wId, tId, date, type, amount);
+        }
+    } catch (sql::SQLException& e) {
+        cerr << "Error getting all transactions: " << e.what() << endl;
+    }
+    return transactions;
+}
+
+vector<Transaction> TransactionDBDAO::getTransactionsByWalletId(int walletId) {
+	vector<Transaction> transactions;
     try {
         unique_ptr<sql::PreparedStatement> pstmt(
             conn->prepareStatement("SELECT carteira_id, id, data, tipo, valor FROM Transacao WHERE carteira_id = ?"));
