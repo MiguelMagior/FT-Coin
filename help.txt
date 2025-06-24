@@ -1,12 +1,20 @@
- ************************ HELP **********************************
- FT-COIN
- Wallet Managment System in C++ language.
- ****************************************************************
- 1 - Wallet: create, consult, edit or remove a wallet.
- 2 - Transaction: associate a transaction(purchase or sale)
- with a wallet.
- 3 - Reports: generate various reports to summarize the wallets
- historic.
- 4 - Help: information about the system and the authors.
- 5 - Close: close the program.
- *****************************************************************
+************************ HELP *************************************
+Welcome!
+FT-COIN is a virtual coin wallet management simulation system 
+developed in C++. You can simulate transactions and track profit or 
+loss based on daily currency rates.
+*******************************************************************
+1 - Wallet: create, view, edit, or delete a wallet. Each wallet 
+has an owner and a broker, and is identified by an ID.
+2 - Transaction: associate a transaction with a wallet. Transactions 
+are identified by an ID and include a date and operation type 
+(purchase or sale).
+3 - Reports: generate various reports to summarize wallet history:
+    - List wallets by owner name or ID
+    - Check wallet balance
+    - View complete transaction history
+    - Calculate profit or loss based on currency rates
+4 - Help: information about the system and its authors, along with
+other support functions.
+5 - Exit: close the program.
+*******************************************************************
