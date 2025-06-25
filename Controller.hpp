@@ -33,6 +33,13 @@ private:
 	void editWallet();
 	void deleteWallet();
 
+	//transaction
+	void registerTransaction(char type);
+	vector<Transaction> getAllWalletTransactions(int walletId);
+	int getLastTransactionId(int walletId);
+	void registerPurchase();
+	void registerSale();
+
 	//report
 	void reportWalletById();
 	void reportWalletByName();

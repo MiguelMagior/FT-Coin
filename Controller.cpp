@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <exception>
 using namespace std;
 
 Controller::Controller(DataBaseType dbType){
@@ -97,7 +98,7 @@ void Controller::transactionMenu(){
 		"Register Purchase", "Register Sale", "Return"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::teste, &Controller::teste
+		&Controller::registerPurchase, &Controller::registerSale
 	};
 	launchMenu(menuItens, "Transaction", functions);
 }
@@ -141,7 +142,7 @@ void Controller::newWallet(){
 	getline(cin, holderName);
 	cout << " Broker: ";
 	getline(cin, broker);
-
+	cout << " *** Register Purchase ***" << endl;
 	newWallet.setId(newWallet.getId());
 	newWallet.setHolderName(holderName);
 	newWallet.setBroker(broker);
@@ -213,6 +214,67 @@ void Controller::deleteWallet(){
 	else{
 		cout << " Error deleting wallet" << endl;
 	}
+}
+
+// *** TRANSACTIONS *** //
+void Controller::registerTransaction(char type){
+	int walletId;
+	string date;
+	Transaction* transaction;
+	double amount;
+
+	cout << " Choose Wallet: " << endl;
+	walletId = getId();
+	if(findWalletById(walletId)){
+		try{
+			cin.ignore();
+			cout << " Date(YEAR/MONTH/DAY): ";
+			cin >> date;
+			cout << " Amount($0.0): ";
+			cin >> amount;
+
+			transaction = new Transaction(walletId, getLastTransactionId(walletId) + 1, date, type, amount);
+			transactions->addTransaction(*transaction);
+		}
+		catch(exception e){
+			cerr << " Transaction error: " << e.what() << endl;
+		}
+	}
+}
+
+vector<Transaction> Controller::getAllWalletTransactions(int walletId){
+	vector<Transaction> walletTransactions;
+	Transaction* transaction;
+	int index = 0;
+	transaction = transactions->getTransactionById(index);
+
+	while(transaction != nullptr){
+		if(transaction->getWalletId() == walletId){
+			walletTransactions.push_back(*transaction);
+		}
+		index++;
+		transaction = transactions->getTransactionById(index);
+	}
+	return walletTransactions;
+}
+
+int Controller::getLastTransactionId(int walletId){
+	vector<Transaction> walletTransactions = getAllWalletTransactions(walletId);
+	if(walletTransactions.size() == 0){
+		return -1;
+	}
+	Transaction lastTransaction = walletTransactions.back();
+	return lastTransaction.getTransactionId();
+}
+
+void Controller::registerPurchase(){
+	cout << " *** Purchase ***" << endl;
+	registerTransaction('C');
+}
+
+void Controller::registerSale(){
+	cout << " *** Sale ***" << endl;
+	registerTransaction('V');
 }
 
 // **** REPORTS ****  //
