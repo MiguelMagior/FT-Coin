@@ -4,13 +4,13 @@
 #include "DataBaseType.hpp"
 
 #include "WalletMemoryDAO.hpp"
-#include "WalletDBDAO.hpp"
+//#include "WalletDBDAO.hpp"
 
 #include "TransactionMemoryDAO.hpp"
-#include "TransactionDBDAO.hpp"
+//#include "TransactionDBDAO.hpp"
 
 #include "OracleMemoryDAO.hpp"
-#include "OracleDBDAO.hpp"
+//#include "OracleDBDAO.hpp"
 
 #include <vector>
 #include <string>
@@ -28,6 +28,7 @@ Controller::Controller(DataBaseType dbType){
                 break;
 
             case DB: {
+            	/*
                 const string host = "143.106.234.64";
                 const string user = "Pool_25_A03";
                 const string password = "SwNWcvIM94";
@@ -37,6 +38,7 @@ Controller::Controller(DataBaseType dbType){
                 transactions = new TransactionDBDAO(host, user, password, database);
                 oracle = new OracleDBDAO(host, user, password, database);
                 break;
+                */
             }
 
             default:
