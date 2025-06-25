@@ -2,7 +2,6 @@
 #define WALLET_DB_DAO_HPP
 
 #include <vector>
-#include <optional>
 #include <string>
 #include <memory>
 #include <mariadb/conncpp.hpp>

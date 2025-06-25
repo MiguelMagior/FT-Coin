@@ -15,6 +15,6 @@ are identified by an ID and include a date and operation type
     - View complete transaction history
     - Calculate profit or loss based on currency rates
 4 - Help: information about the system and its authors, along with
-other support functions.
+other support functions like populate the memory base.
 5 - Exit: close the program.
 *******************************************************************

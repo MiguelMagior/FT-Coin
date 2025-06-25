@@ -19,6 +19,7 @@ private:
 	void launchMenu(vector<string> menuItens, string title, vector<void (Controller::*)()> functions);
 	void teste();
 	void populate();
+	int getId();
 	//menu
 	void walletMenu();
 	void transactionMenu();
@@ -27,7 +28,7 @@ private:
 
 	//wallet
 	void newWallet();
-	bool getWalletById();
+	bool findWalletById(int id);
 	void seeWallet();
 	void editWallet();
 	void deleteWallet();

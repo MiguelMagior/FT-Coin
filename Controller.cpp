@@ -114,7 +114,7 @@ void Controller::reportMenu(){
 
 void Controller::menuHelp(){
 	vector<string> menuItens{
-		"Features Help", "Credits", "Test Populate", "Return"
+		"Features Help", "Credits", "Test Population", "Return"
 	};
 	vector<void (Controller::*)()> functions{
 		&Controller::printHelp, &Controller::printCredits, &Controller::populate
@@ -154,13 +154,15 @@ void Controller::newWallet(){
 		cout << " Error adding Wallet" << endl;
 	}
 }
-
-bool Controller::getWalletById(){
+int Controller::getId(){
 	int id;
 	cin.ignore();
 	cout << " ID: ";
 	id = validInt();
+	return id;
+}
 
+bool Controller::findWalletById(int id){
 	const Wallet* wallet = wallets->getWalletById(id);
 
 	if (wallet != nullptr) {
@@ -175,26 +177,26 @@ bool Controller::getWalletById(){
 
 void Controller::seeWallet(){
 	cout << endl << " *** SEE WALLET ***" << endl;
-	getWalletById();
+	findWalletById(getId());
 }
 
 void Controller::editWallet(){
 	string holderName, broker;
+	Wallet* wallet = new Wallet();
 	int id;
-	Wallet* wallet;
-
 	cout << " *** EDIT WALLET ***" << endl;
+	id = getId();
 
-	if(getWalletById()){
-		wallet = wallets->getWalletById(id);
+	if(findWalletById(id)){
+		wallet->setId(id);
 		cin.ignore();
 		cout << " Holder Name: ";
 		getline(cin, holderName);
+		wallet->setHolderName(holderName);
 		cout << " Broker: ";
 		getline(cin, broker);
-
-		wallet->setHolderName(holderName);
 		wallet->setBroker(broker);
+		wallets->updateWallet(*wallet);
 	}
 }
 
@@ -202,8 +204,9 @@ void Controller::deleteWallet(){
 	int id;
 
 	cout << " *** DELETE WALLET ***" << endl;
+	id = getId();
 
-	if(getWalletById()){
+	if(findWalletById(id)){
 		wallets->deleteWallet(id);
 		cout << " Wallet deleted successfully" << endl;
 	}
