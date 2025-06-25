@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+
 using namespace std;
 
 class Controller {
@@ -32,17 +33,21 @@ private:
 	void seeWallet();
 	void editWallet();
 	void deleteWallet();
+	int getLastWalletId();
 
 	//transaction
 	void registerTransaction(char type);
 	vector<Transaction> getAllWalletTransactions(int walletId);
-	int getLastTransactionId(int walletId);
 	void registerPurchase();
 	void registerSale();
+	double getWalletBalance(int walletId);
+	void printWalletTransactions(int walletId);
 
 	//report
 	void reportWalletById();
 	void reportWalletByName();
+	void reportWalletBalance();
+	void reportTransactionHistory();
 
 	//help
 	void printCredits();

@@ -16,6 +16,7 @@ Wallet::Wallet(const string& holderName, const string& broker) : id(++lastWallet
 // Parameterized constructor
 Wallet::Wallet(int id, const string& holderName, const string& broker)
     : id(id), holderName(holderName), broker(broker) {
+	lastWalletId = id;
 }
 
 // Getters

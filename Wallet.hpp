@@ -8,8 +8,8 @@ class Wallet {
 private:
 	static int lastWalletId;
     int id;
-    std::string holderName;
-    std::string broker;
+    string holderName;
+    string broker;
 
 public:
     // Constructors

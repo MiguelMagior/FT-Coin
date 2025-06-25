@@ -16,6 +16,7 @@
 #include <string>
 #include <iostream>
 #include <exception>
+#include <iomanip>
 using namespace std;
 
 Controller::Controller(DataBaseType dbType){
@@ -107,10 +108,10 @@ void Controller::transactionMenu(){
 
 void Controller::reportMenu(){
 	vector<string> menuItens{
-		"Wallets by ID", "Wallets by Name", "Wallet Balance", "Transaction History", "Wallet Balance","Return"
+		"Wallets by ID", "Wallets by Name", "Wallet Current Balance", "Transaction History", "All Wallets Balance","Return"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::reportWalletById, &Controller::reportWalletByName, &Controller::teste, &Controller::teste, &Controller::teste
+		&Controller::reportWalletById, &Controller::reportWalletByName, &Controller::reportWalletBalance, &Controller::reportTransactionHistory, &Controller::teste
 	};
 	launchMenu(menuItens, "Transaction", functions);
 }
@@ -125,14 +126,6 @@ void Controller::menuHelp(){
 	launchMenu(menuItens, "Help", functions);
 }
 
-void Controller::populate(){
-	wallets->addWallet(Wallet("Lucas", "Broker1"));
-	wallets->addWallet(Wallet("Adriane", "Broker1"));
-	wallets->addWallet(Wallet("Henrique", "Broker1"));
-
-	cout << " Memory populated" << endl;
-}
-
 // **** WALLET ****  //
 void Controller::newWallet(){
 	string holderName, broker;
@@ -144,19 +137,19 @@ void Controller::newWallet(){
 	getline(cin, holderName);
 	cout << " Broker: ";
 	getline(cin, broker);
-	cout << " *** Register Purchase ***" << endl;
 	newWallet.setId(newWallet.getId());
 	newWallet.setHolderName(holderName);
 	newWallet.setBroker(broker);
 
-	switch(wallets->addWallet(newWallet)){
-	case true:
+	if(wallets->addWallet(newWallet)){
 		cout << " Wallet added successfully" << endl;
-		break;
-	default:
+	}
+	else{
 		cout << " Error adding Wallet" << endl;
 	}
 }
+
+
 int Controller::getId(){
 	int id;
 	cin.ignore();
@@ -210,6 +203,10 @@ void Controller::deleteWallet(){
 	id = getId();
 
 	if(findWalletById(id)){
+		vector<Transaction> walletTransactions = transactions->getTransactionsByWalletId(id);
+		for (const auto& transaction : walletTransactions) {
+			transactions->deleteTransaction(transaction.getTransactionId());
+		}
 		wallets->deleteWallet(id);
 		cout << " Wallet deleted successfully" << endl;
 	}
@@ -235,38 +232,13 @@ void Controller::registerTransaction(char type){
 			cout << " Amount($0.0): ";
 			cin >> amount;
 
-			transaction = new Transaction(walletId, getLastTransactionId(walletId) + 1, date, type, amount);
+			transaction = new Transaction(walletId, date, type, amount);
 			transactions->addTransaction(*transaction);
 		}
 		catch(exception e){
 			cerr << " Transaction error: " << e.what() << endl;
 		}
 	}
-}
-
-vector<Transaction> Controller::getAllWalletTransactions(int walletId){
-	vector<Transaction> walletTransactions;
-	Transaction* transaction;
-	int index = 0;
-	transaction = transactions->getTransactionById(index);
-
-	while(transaction != nullptr){
-		if(transaction->getWalletId() == walletId){
-			walletTransactions.push_back(*transaction);
-		}
-		index++;
-		transaction = transactions->getTransactionById(index);
-	}
-	return walletTransactions;
-}
-
-int Controller::getLastTransactionId(int walletId){
-	vector<Transaction> walletTransactions = getAllWalletTransactions(walletId);
-	if(walletTransactions.size() == 0){
-		return -1;
-	}
-	Transaction lastTransaction = walletTransactions.back();
-	return lastTransaction.getTransactionId();
 }
 
 void Controller::registerPurchase(){
@@ -277,6 +249,24 @@ void Controller::registerPurchase(){
 void Controller::registerSale(){
 	cout << " *** Sale ***" << endl;
 	registerTransaction('V');
+}
+
+double Controller::getWalletBalance(int walletId){
+	double balance = 0;
+	vector<Transaction> walletTransactions = transactions->getTransactionsByWalletId(walletId);
+
+	for (const auto& transaction : walletTransactions) {
+	    balance += (transaction.getType() == 'V' ? transaction.getAmount() : -transaction.getAmount());
+	}
+
+	return balance;
+}
+
+void Controller::printWalletTransactions(int walletId){
+	vector<Transaction> walletTransactions = transactions->getTransactionsByWalletId(walletId);
+	for (const auto& transaction : walletTransactions) {
+	    cout << transaction << endl;
+	}
 }
 
 // **** REPORTS ****  //
@@ -312,11 +302,59 @@ void Controller::reportWalletByName(){
 	}
 }
 
+void Controller::reportWalletBalance(){
+	int id;
+
+	cout << " *** Wallet Balance ***" << endl;
+	id = getId();
+	if(findWalletById(id)){
+		cout << fixed << setprecision(2);
+		cout << " " << getWalletBalance(id) << " coins" << endl;
+	}
+}
+
+void Controller::reportTransactionHistory(){
+	int id;
+
+	cout << " *** Transaction History ***" << endl;
+	id = getId();
+	if(findWalletById(id)){
+		printWalletTransactions(id);
+	}
+}
+
 // *** HELP ***
+
 void Controller::printCredits(){
 	printFile("credits.txt");
 }
 
 void Controller::printHelp(){
 	printFile("help.txt");
+}
+
+void Controller::populate(){
+	int lastWalletId = getLastWalletId();
+
+	wallets->addWallet(Wallet(lastWalletId + 1, "Lucas", "Broker1"));
+	wallets->addWallet(Wallet(lastWalletId + 2,"Adriane", "Broker2"));
+	wallets->addWallet(Wallet(lastWalletId + 3,"Henrique", "Broker3"));
+
+	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/05/26", 'C', 1.0));
+	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/05/27", 'V', 0.5));
+	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/05/26", 'C', 2.0));
+	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/05/27", 'V', 1.0));
+	transactions->addTransaction(Transaction(lastWalletId + 3, "2025/05/26", 'C', 3.0));
+	transactions->addTransaction(Transaction(lastWalletId + 3, "2025/05/27", 'V', 3.0));
+
+
+	cout << " Memory populated" << endl;
+}
+
+int Controller::getLastWalletId(){
+	vector<Wallet> walletVector = wallets->getAllWallets();
+	if(walletVector.empty()){
+		return 0;
+	}
+	return walletVector.back().getId();
 }

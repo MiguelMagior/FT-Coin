@@ -6,6 +6,7 @@ using namespace std;
 
 class Transaction {
 private:
+	static int lastTransactionId;
     int walletId;
     int transactionId;
     string date;
@@ -15,6 +16,7 @@ private:
 public:
     Transaction();
     Transaction(int walletId, int transactionId, const string& date, char type, double amount);
+    Transaction(int walletId, const string& date, char type, double amount);
 
     // Getters
     int getWalletId() const;
@@ -29,6 +31,8 @@ public:
     void setDate(const string& date);
     void setType(char type);
     void setAmount(double amount);
+
+    friend ostream& operator<<(ostream& os, const Transaction& transaction);
 };
 
 #endif // TRANSACTION_HPP
