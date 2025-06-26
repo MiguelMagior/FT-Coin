@@ -9,7 +9,7 @@ TransactionDBDAO::TransactionDBDAO(const string& uri, const string& user, const 
         conn = unique_ptr<sql::Connection>(driver->connect(uri, user, password));
         conn->setSchema(database);
     } catch (sql::SQLException& e) {
-        cerr << "Connectvector<tuple<int, int, string, char, double>>ion error: " << e.what() << endl;
+        cerr << "Connection error: " << e.what() << endl;
         throw;
     }
 }

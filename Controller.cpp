@@ -323,13 +323,18 @@ void Controller::reportWalletByName(){
 
 void Controller::reportWalletBalance(){
 	int id;
-
+	double value;
 	cout << " *** Wallet Balance ***" << endl;
 	id = getId();
 	if(findWalletById(id)){
-		cout << fixed << setprecision(2);
-		cout << " " << getWalletBalance(id) << " coins"
-		 << " - $" << getWalletValue(id);
+		cout << fixed << setprecision(5);
+		cout << " " << getWalletBalance(id) << " coins - $";
+		value = getWalletValue(id);
+		if (value < 0) {
+			cout << "\033[31m" << value << "\033[0m" << endl; // Vermelho se negativo
+		} else {
+			cout << "\033[32m" << value << "\033[0m" << endl; // Verde se positivo/zero
+		}
 	}
 }
 
@@ -345,9 +350,15 @@ void Controller::reportTransactionHistory(){
 
 void Controller::reportAllWalletsBalance(){
 	vector<Wallet> allWallets = wallets->getAllWallets();
+	double value;
 	for(const auto& wallet : allWallets){
 		findWalletById(wallet.getId());
-		cout << "\t $" << getWalletValue(wallet.getId()) << endl;
+		value = getWalletValue(wallet.getId());
+		if (value < 0) {
+			cout << "\t $" << "\033[31m" << value << "\033[0m" << endl; // Vermelho se negativo
+		} else {
+			cout << "\t $" << "\033[32m" << value << "\033[0m" << endl; // Verde se positivo/zero
+		}
 	}
 }
 // *** HELP ***
