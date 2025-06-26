@@ -1,4 +1,4 @@
-#ifndef CONTROLLLER_HPP
+#ifndef CONTROLLER_HPP
 #define CONTROLLER_HPP
 
 #include "WalletDAO.hpp"

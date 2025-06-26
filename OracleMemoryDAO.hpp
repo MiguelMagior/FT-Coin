@@ -2,7 +2,6 @@
 #define ORACLE_MEMORY_DAO_HPP
 
 #include <vector>
-#include <optional>
 #include <string>
 #include "Oracle.hpp"
 #include "OracleMemoryDAO.hpp"

@@ -56,7 +56,7 @@ Wallet* WalletDBDAO::getWalletById(int id){
         unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
 
         if (res->next()) {
-            Wallet* wallet;
+            Wallet* wallet = new Wallet();
             wallet->setId(res->getInt("Identificador"));
 
             string holderName = res->getString("Nome_do_titular").c_str();

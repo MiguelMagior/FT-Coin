@@ -12,7 +12,6 @@ OracleMemoryDAO::OracleMemoryDAO() {
 	fstream file;
 	string line, date;
 	double rate;
-	char separator = ' ';
 	Oracle oracle;
 
 	try{
@@ -25,7 +24,7 @@ OracleMemoryDAO::OracleMemoryDAO() {
 			oracles.push_back(oracle);
 		}
 		file.close();
-	}catch(exception e){
+	}catch(exception& e){
 		cerr << " Error opening Oracle file: " << e.what() << endl;
 	}
 

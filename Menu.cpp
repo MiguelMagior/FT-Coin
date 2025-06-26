@@ -3,7 +3,7 @@
 #include <vector>
 using namespace std;
 
-Menu::Menu(vector<string> &itens, string title) : title(title), itens(itens){
+Menu::Menu(vector<string> &itens, string title) : itens(itens), title(title){
 	this->decorator = '-';
 	this->message = "Choose a option: ";
 }
@@ -14,17 +14,19 @@ void Menu::decorate(){
 }
 
 void Menu::printMenu(){
+	int index = 0;
 	decorate();
 	cout << " " << title << endl;
 	decorate();
-	for(int index = 0; index < itens.size(); index++){
-		cout << " " << index+1 << " - " << itens.at(index) << endl;
+	for(const auto& item : itens){
+		cout << " " << index+1 << " - " << item << endl;
+		index++;
 	}
 	decorate();
 }
 
 bool Menu::isValidChoice(int choice){
-	if((choice > 0) && (choice <= itens.size())){
+	if((choice > 0) && (choice <= int(itens.size()))){
 		return true;
 	}
 	else{
@@ -40,7 +42,7 @@ int Menu::getChoice(){
 		cout << " " << message;
 		cin >> choice;
 		} while(!isValidChoice(choice));
-	if(choice == itens.size()+1)
+	if((choice == int(itens.size()+1)))
 		return -1;
 	return choice;
 }

@@ -7,8 +7,8 @@ using namespace std;
 int validInt();
 template<typename Type> bool isDuplicated(vector<Type> vec, Type data){
 	bool isDuplicated = false;
-	for(int index = 0; index < vec.size(); index++){
-		if(data == vec.at(index)){
+	for(const auto& element : vec){
+		if(data == element){
 			isDuplicated = true;
 		}
 	}

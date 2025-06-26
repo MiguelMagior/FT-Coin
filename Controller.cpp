@@ -4,13 +4,13 @@
 #include "DataBaseType.hpp"
 
 #include "WalletMemoryDAO.hpp"
-//#include "WalletDBDAO.hpp"
+#include "WalletDBDAO.hpp"
 
 #include "TransactionMemoryDAO.hpp"
-//#include "TransactionDBDAO.hpp"
+#include "TransactionDBDAO.hpp"
 
 #include "OracleMemoryDAO.hpp"
-//#include "OracleDBDAO.hpp"
+#include "OracleDBDAO.hpp"
 
 #include <vector>
 #include <string>
@@ -29,7 +29,7 @@ Controller::Controller(DataBaseType dbType){
                 break;
 
             case DB: {
-            	/*
+
                 const string host = "143.106.234.64";
                 const string user = "Pool_25_A03";
                 const string password = "SwNWcvIM94";
@@ -39,7 +39,7 @@ Controller::Controller(DataBaseType dbType){
                 transactions = new TransactionDBDAO(host, user, password, database);
                 oracle = new OracleDBDAO(host, user, password, database);
                 break;
-                */
+
             }
 
             default:
@@ -74,8 +74,8 @@ void Controller::launchMenu(vector<string> menuItens, string title, vector<void 
 	Menu menu(menuItens, title);
 	int choice;
 
-	while(choice = menu.getChoice()){
-		if(choice == menuItens.size()){
+	while((choice = menu.getChoice())){
+		if((choice == int(menuItens.size()))){
 			break;
 		}
 		(this->*functions.at(choice-1))();
@@ -293,29 +293,28 @@ void Controller::reportWalletById(){
 	vector<Wallet> allWallets = wallets->getAllWallets();
 
 	cout << " *** Wallets by ID ***" << endl;
-	for(int index = 0; index < allWallets.size(); index++){
-		cout << allWallets.at(index) << endl;
+	for(const auto& wallet : allWallets){
+		cout << wallet << endl;
 	}
 }
 
 void Controller::reportWalletByName(){
-	int index = 0;
 	vector<string> names;
 	vector<Wallet> allWallets = wallets->getAllWallets();
 
-	for(int index = 0; index < allWallets.size(); index++){
-		if(!isDuplicated(names, allWallets.at(index).getHolderName())){
-			names.push_back(allWallets.at(index).getHolderName());
+	for(const auto& wallet : allWallets){
+		if((!isDuplicated(names, wallet.getHolderName()))){
+			names.push_back(wallet.getHolderName());
 		}
 	}
 	names = sortAlphabetical(names);
 
 	cout << " *** Wallets by Name ***" << endl;
 
-	for(int name = 0; name < names.size(); name++){
-		for(int wallet = 0; wallet < allWallets.size(); wallet++){
-			if(allWallets.at(wallet).getHolderName() == names.at(name)){
-				cout << allWallets.at(wallet) << endl;
+	for(const auto& name : names){
+		for(const auto& wallet : allWallets){
+			if(wallet.getHolderName() == name){
+				cout << wallet << endl;
 			}
 		}
 	}
