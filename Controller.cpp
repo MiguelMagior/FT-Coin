@@ -82,7 +82,7 @@ void Controller::launchMenu(vector<string> menuItens, string title, vector<void 
 
 void Controller::walletMenu(){
 	vector<string> menuItens{
-		"New Wallet", "See Wallet", "Edit Wallet", "Delete Wallet", "Return"
+		"New Wallet", "Visualize Wallet", "Edit Wallet", "Delete Wallet", "Return"
 	};
 	vector<void (Controller::*)()> functions{
 		&Controller::newWallet, &Controller::seeWallet, &Controller::editWallet, &Controller::deleteWallet
@@ -191,7 +191,7 @@ bool Controller::findWalletById(int id){
 }
 
 void Controller::seeWallet(){
-	cout << endl << " *** SEE WALLET ***" << endl;
+	cout << endl << " *** VISUALIZE WALLET ***" << endl;
 	findWalletById(getId());
 }
 
