@@ -1,5 +1,6 @@
 #include "OracleDBDAO.hpp"
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 OracleDBDAO::OracleDBDAO(const string& uri, const string& user, const string& password, const string& database) {
@@ -7,10 +8,41 @@ OracleDBDAO::OracleDBDAO(const string& uri, const string& user, const string& pa
         sql::Driver* driver = sql::mariadb::get_driver_instance();
         conn = unique_ptr<sql::Connection>(driver->connect(uri, user, password));
         conn->setSchema(database);
+
+        if (isOracleTableEmpty()) {
+            fstream file;
+            string line, date;
+            double rate;
+            Oracle oracle;
+
+            file.open("oracle.txt");
+            if (!file.is_open()) {
+                throw runtime_error("Failed to open oracle.txt");
+            }
+
+            while (getline(file, line)) {
+                date = line.substr(0, 10);
+                rate = stod(line.substr(11, 7));
+                oracle.setDate(date);
+                oracle.setRate(rate);
+                addOracle(oracle);
+            }
+            file.close();
+        }
     } catch (sql::SQLException& e) {
-        cerr << "Connection error: " << e.what() << endl;
+        cerr << "SQL Error: " << e.what() << endl;
+        throw;
+    } catch (exception& e) {
+        cerr << "Error: " << e.what() << endl;
         throw;
     }
+}
+
+bool OracleDBDAO::isOracleTableEmpty() {
+    unique_ptr<sql::Statement> stmt(conn->createStatement());
+    unique_ptr<sql::ResultSet> res(stmt->executeQuery("SELECT COUNT(*) FROM oracle_rates"));
+    res->next();
+    return (res->getInt(1) == 0);
 }
 
 bool OracleDBDAO::addOracle(const Oracle& oracle) {

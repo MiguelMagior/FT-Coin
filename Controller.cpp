@@ -20,37 +20,7 @@
 using namespace std;
 
 Controller::Controller(DataBaseType dbType){
-	try {
-		switch(dbType) {
-			case MEMORY:
-                wallets = new WalletMemoryDAO();
-                transactions = new TransactionMemoryDAO();
-                oracle = new OracleMemoryDAO();
-                break;
-
-            case DB: {
-
-                const string host = "143.106.234.64";
-                const string user = "Pool_25_A03";
-                const string password = "SwNWcvIM94";
-                const string database = "Pool_25_A03";
-
-                wallets = new WalletDBDAO(host, user, password, database);
-                transactions = new TransactionDBDAO(host, user, password, database);
-                oracle = new OracleDBDAO(host, user, password, database);
-                break;
-
-            }
-
-            default:
-                throw invalid_argument(" Invalid database type");
-        }
-    } catch (const exception& e) {
-        delete wallets;
-        delete transactions;
-        delete oracle;
-        throw;
-    }
+	createDB(dbType);
 }
 
 Controller::~Controller(){
@@ -60,12 +30,40 @@ Controller::~Controller(){
 	cout << " Program closed " << endl;
 }
 
+void Controller::createDB(DataBaseType dbType){
+	const string host = "143.106.234.64";
+	const string user = "Pool_25_A03";
+    const string password = "SwNWcvIM94";
+    const string database = "Pool_25_A03";
+	try {
+		switch(dbType) {
+			case MEMORY:
+				wallets = new WalletMemoryDAO();
+	            transactions = new TransactionMemoryDAO();
+	            oracle = new OracleMemoryDAO();
+	            break;
+			case DB:
+	            wallets = new WalletDBDAO(host, user, password, database);
+	            transactions = new TransactionDBDAO(host, user, password, database);
+	            oracle = new OracleDBDAO(host, user, password, database);
+	            break;
+	            default:
+	                throw invalid_argument(" Invalid database type");
+	        }
+	    } catch (const exception& e) {
+	        delete wallets;
+	        delete transactions;
+	        delete oracle;
+	        throw;
+	    }
+}
+
 void Controller::start(){
 	vector<string> menuItens{
-		"Wallet", "Transaction", "Report", "Help", "Close"
+		"Wallet", "Transaction", "Report", "Help", "Select Data Base", "Close"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::walletMenu, &Controller::transactionMenu, &Controller::reportMenu, &Controller::menuHelp
+		&Controller::walletMenu, &Controller::transactionMenu, &Controller::reportMenu, &Controller::menuHelp, &Controller::selectDB
 	};
 	launchMenu(menuItens, "FT-COIN", functions);
 }
@@ -120,6 +118,31 @@ void Controller::menuHelp(){
 		&Controller::printHelp, &Controller::printCredits, &Controller::populate
 	};
 	launchMenu(menuItens, "Help", functions);
+}
+
+void Controller::selectDB(){
+	int choice;
+
+	cout << " Select: " << endl
+		<< " 1 - Memory" << endl
+		<< " 2 - MariaDB" << endl;
+	while(1){
+		cin.ignore();
+		cin >> choice;
+		if(choice == 1){
+			createDB(MEMORY);
+			break;
+		}
+		else if(choice == 2){
+			createDB(DB);
+			break;
+		}
+		else{
+			cout << " Invalid choice. Try again: ";
+		}
+	}
+
+
 }
 
 // **** WALLET ****  //
@@ -378,7 +401,7 @@ void Controller::populate(){
 	wallets->addWallet(Wallet(lastWalletId + 3,"Henrique", "Broker3"));
 
 	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/02/26", 'C', 1.0));
-	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/12/27", 'V', 0.5));
+	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/12/27", 'V', 0.1));
 	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/01/26", 'C', 2.0));
 	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/10/27", 'V', 1.0));
 	transactions->addTransaction(Transaction(lastWalletId + 3, "2025/03/26", 'C', 3.0));

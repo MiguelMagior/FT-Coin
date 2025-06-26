@@ -21,7 +21,7 @@ OracleMemoryDAO::OracleMemoryDAO() {
 			rate = stod(line.substr(11,7));
 			oracle.setDate(date);
 			oracle.setRate(rate);
-			oracles.push_back(oracle);
+			addOracle(oracle);
 		}
 		file.close();
 	}catch(exception& e){

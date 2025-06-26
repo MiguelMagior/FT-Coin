@@ -17,9 +17,13 @@ private:
 	TransactionDAO *transactions;
 	OracleDAO *oracle;
 
+	void selectDB(DataBaseType dbType);
 	void launchMenu(vector<string> menuItens, string title, vector<void (Controller::*)()> functions);
 	void populate();
+	void createDB(DataBaseType dbType);
+	void selectDB();
 	int getId();
+
 	//menu
 	void walletMenu();
 	void transactionMenu();
