@@ -60,10 +60,6 @@ Controller::~Controller(){
 	cout << " Program closed " << endl;
 }
 
-void Controller::teste(){
-	cout << "AINDA NÃO IMPLEMENTADO" << endl;
-}
-
 void Controller::start(){
 	vector<string> menuItens{
 		"Wallet", "Transaction", "Report", "Help", "Close"
@@ -111,7 +107,7 @@ void Controller::reportMenu(){
 		"Wallets by ID", "Wallets by Name", "Wallet Current Balance", "Transaction History", "All Wallets Balance","Return"
 	};
 	vector<void (Controller::*)()> functions{
-		&Controller::reportWalletById, &Controller::reportWalletByName, &Controller::reportWalletBalance, &Controller::reportTransactionHistory, &Controller::teste
+		&Controller::reportWalletById, &Controller::reportWalletByName, &Controller::reportWalletBalance, &Controller::reportTransactionHistory, &Controller::reportAllWalletsBalance
 	};
 	launchMenu(menuItens, "Transaction", functions);
 }
@@ -224,20 +220,20 @@ void Controller::registerTransaction(char type){
 
 	cout << " Choose Wallet: " << endl;
 	walletId = getId();
-	if(findWalletById(walletId)){
-		try{
-			cin.ignore();
-			cout << " Date(YEAR/MONTH/DAY): ";
-			cin >> date;
-			cout << " Amount($0.0): ";
-			cin >> amount;
 
-			transaction = new Transaction(walletId, date, type, amount);
-			transactions->addTransaction(*transaction);
+	if(findWalletById(walletId)){
+		cin.ignore();
+		cout << " Date(YEAR/MONTH/DAY): ";
+		cin >> date;
+		cout << " Amount($0.0): ";
+		cin >> amount;
+		if(type == 'V' && (getWalletBalance(walletId) < amount)){
+			cout << " Invalid transaction. Amount higher than wallet balance." << endl;
+			return;
 		}
-		catch(exception e){
-			cerr << " Transaction error: " << e.what() << endl;
-		}
+		transaction = new Transaction(walletId, date, type, amount);
+		transactions->addTransaction(*transaction);
+
 	}
 }
 
@@ -266,6 +262,29 @@ void Controller::printWalletTransactions(int walletId){
 	vector<Transaction> walletTransactions = transactions->getTransactionsByWalletId(walletId);
 	for (const auto& transaction : walletTransactions) {
 	    cout << transaction << endl;
+	}
+}
+
+double Controller::getWalletValue(int walletId){
+	double value = 0;
+	vector<Transaction> walletTransactions = transactions->getTransactionsByWalletId(walletId);
+
+	for ( auto& transaction : walletTransactions) {
+		value += getTransactionValue(&transaction);
+	}
+	return value;
+}
+// *** ORACLE *** //
+double Controller::getTransactionValue(Transaction* transaction){
+	Oracle* dateOracle = oracle->getOracleByDate(transaction->getDate());
+	double amount = transaction->getAmount();
+	double rate = dateOracle->getRate();
+
+	if(transaction->getType() == 'V'){
+		return amount * rate;
+	}
+	else{
+		return amount * rate * -1;
 	}
 }
 
@@ -309,7 +328,8 @@ void Controller::reportWalletBalance(){
 	id = getId();
 	if(findWalletById(id)){
 		cout << fixed << setprecision(2);
-		cout << " " << getWalletBalance(id) << " coins" << endl;
+		cout << " " << getWalletBalance(id) << " coins"
+		 << " - $" << getWalletValue(id);
 	}
 }
 
@@ -323,6 +343,13 @@ void Controller::reportTransactionHistory(){
 	}
 }
 
+void Controller::reportAllWalletsBalance(){
+	vector<Wallet> allWallets = wallets->getAllWallets();
+	for(const auto& wallet : allWallets){
+		findWalletById(wallet.getId());
+		cout << "\t $" << getWalletValue(wallet.getId()) << endl;
+	}
+}
 // *** HELP ***
 
 void Controller::printCredits(){
@@ -340,13 +367,12 @@ void Controller::populate(){
 	wallets->addWallet(Wallet(lastWalletId + 2,"Adriane", "Broker2"));
 	wallets->addWallet(Wallet(lastWalletId + 3,"Henrique", "Broker3"));
 
-	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/05/26", 'C', 1.0));
-	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/05/27", 'V', 0.5));
-	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/05/26", 'C', 2.0));
-	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/05/27", 'V', 1.0));
-	transactions->addTransaction(Transaction(lastWalletId + 3, "2025/05/26", 'C', 3.0));
+	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/02/26", 'C', 1.0));
+	transactions->addTransaction(Transaction(lastWalletId + 1, "2025/12/27", 'V', 0.5));
+	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/01/26", 'C', 2.0));
+	transactions->addTransaction(Transaction(lastWalletId + 2, "2025/10/27", 'V', 1.0));
+	transactions->addTransaction(Transaction(lastWalletId + 3, "2025/03/26", 'C', 3.0));
 	transactions->addTransaction(Transaction(lastWalletId + 3, "2025/05/27", 'V', 3.0));
-
 
 	cout << " Memory populated" << endl;
 }

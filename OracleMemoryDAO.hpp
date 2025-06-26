@@ -15,6 +15,7 @@ private:
 
 public:
     OracleMemoryDAO();
+    ~OracleMemoryDAO();
 
     bool addOracle(const Oracle& oracle);
     Oracle* getOracleByDate(const string& date);

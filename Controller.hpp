@@ -18,7 +18,6 @@ private:
 	OracleDAO *oracle;
 
 	void launchMenu(vector<string> menuItens, string title, vector<void (Controller::*)()> functions);
-	void teste();
 	void populate();
 	int getId();
 	//menu
@@ -43,11 +42,16 @@ private:
 	double getWalletBalance(int walletId);
 	void printWalletTransactions(int walletId);
 
+	//oracle
+	double getTransactionValue(Transaction* transaction);
+	double getWalletValue(int walletId);
+
 	//report
 	void reportWalletById();
 	void reportWalletByName();
 	void reportWalletBalance();
 	void reportTransactionHistory();
+	void reportAllWalletsBalance();
 
 	//help
 	void printCredits();

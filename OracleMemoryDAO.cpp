@@ -1,10 +1,39 @@
 #include "OracleMemoryDAO.hpp"
+#include "Oracle.hpp"
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <exception>
 using namespace std;
 
-OracleMemoryDAO::OracleMemoryDAO() {}
+OracleMemoryDAO::OracleMemoryDAO() {
+	fstream file;
+	string line, date;
+	double rate;
+	char separator = ' ';
+	Oracle oracle;
+
+	try{
+		file.open("oracle.txt");
+		while(getline(file,line)){
+			date = line.substr(0,10);
+			rate = stod(line.substr(11,7));
+			oracle.setDate(date);
+			oracle.setRate(rate);
+			oracles.push_back(oracle);
+		}
+		file.close();
+	}catch(exception e){
+		cerr << " Error opening Oracle file: " << e.what() << endl;
+	}
+
+}
+
+OracleMemoryDAO::~OracleMemoryDAO(){
+
+}
 
 bool OracleMemoryDAO::addOracle(const Oracle& oracle) {
     for (const auto& o : oracles) {
